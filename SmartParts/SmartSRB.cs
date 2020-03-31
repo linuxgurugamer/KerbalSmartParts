@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 
 namespace Lib
@@ -22,9 +22,10 @@ namespace Lib
         ModuleEngines engineModule;
 
         double maxTWR = 0;
-        bool checkParentType = false;
+        bool engineDirty = false;
         bool wasArmed = false;
         bool isRunning = false;
+        bool checkResearched = true;
         private string groupLastUpdate = "0"; //AGX: What was our selected group last update frame? Top slider.
 
         #endregion
@@ -34,16 +35,27 @@ namespace Lib
         public override void OnStart(StartState state)
         {
             Log.setTitle("SmartSRB");
+
+            ValidateEngine();
+
+            if (HighLogic.LoadedSceneIsFlight && !isEnabled)
+            {
+                Log.Info("Disabled - not researched.");
+                DisableGUI();
+                return;
+            }
+
             Log.Info("Started");
 
-            CheckParentType();
+            if (HighLogic.LoadedSceneIsFlight && engineModule == null)
+                Log.Error("An engine module was not found.");
 
             //Initial button layout
             updateButtons();
             //Force activation no matter which stage it's on
-            this.part.force_activate();
-            updateButtons();
-
+            if (!observingSelf())
+                this.part.force_activate();
+            
             wasArmed = isArmed;
 
             Fields["autoReset"].guiActiveEditor = false;
@@ -55,6 +67,9 @@ namespace Lib
 
         public override void OnUpdate()
         {
+            if (!isEnabled)
+                return;
+
             //In order for physics to take effect on jettisoned parts, the staging event has to be fired from OnUpdate
             if (fireNextupdate)
             {
@@ -76,8 +91,8 @@ namespace Lib
             }
 
 
-            if (checkParentType)
-                CheckParentType(); // unreachable?
+            if (engineDirty)
+                ValidateEngine(); // unreachable?
 
             double twr = GetTWR();
             displayTWR = twr;
@@ -116,19 +131,26 @@ namespace Lib
   
         void OnEditorPartPlaced(Part p)
         {
-            if (this.part.parent == null)
+            if (!observingSelf())
             {
-                engineModule = null;
-                checkParentType = true;
+                if (this.part.parent == null)
+                {
+                    engineModule = null;
+                    engineDirty = true;
+                }
+                else
+                    ValidateEngine();
             }
-            else
-                CheckParentType();
         }
 
-        bool FindEngine()
+        bool observingSelf()
+        {
+            return engineModule != null && engineModule.part == part;
+        }
+
+        bool FindEngine(Part p)
         {
             engineModule = null;
-            Part p = this.part.parent;
             if (p != null)
             {
                 foreach (ModuleEngines engine in p.FindModulesImplementing<ModuleEngines>())
@@ -143,12 +165,15 @@ namespace Lib
             return engineModule != null;
         }
 
-        void CheckParentType()
+        void ValidateEngine()
         {
-            Log.Info("SmartSRB.CheckParentType");
-            checkParentType = false;
-            
-            if (FindEngine())
+            Log.Info("SmartSRB.ValidateEngine");
+            engineDirty = false;
+
+            if (!FindEngine(part))
+                FindEngine(part.parent);
+
+            if (engineModule != null)
             {
                 Fields["isArmed"].guiActiveEditor = true;
                 Fields["isArmed"].guiActive = true;
@@ -189,6 +214,24 @@ namespace Lib
                 isRunning = thrust > 0;
             }
             return twr;
+        }
+
+        private void DisableGUI()
+        {
+            foreach (BaseAction a in Actions)
+            {
+                a.active = false;
+            }
+            foreach (BaseField f in Fields)
+            {
+                f.guiActive = false;
+                f.guiActiveEditor = false;
+            }
+            foreach (BaseEvent ev in Events)
+            {
+                ev.guiActive = false;
+                ev.guiActiveEditor = false;
+            }
         }
 
         private void updateButtons()
@@ -237,6 +280,21 @@ namespace Lib
         }
         public void Update() //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
         {
+            if (!isEnabled)
+                return;
+
+            bool observingSelf = engineModule != null && engineModule.part == part;
+            if (HighLogic.LoadedSceneIsEditor && observingSelf && checkResearched)
+            {
+                checkResearched = false;
+                AvailablePart ap = PartLoader.getPartInfoByName("");
+                if (!(ResearchAndDevelopment.PartTechAvailable(ap) && ResearchAndDevelopment.PartModelPurchased(ap)))
+                {
+                    DisableGUI();
+                    isEnabled = false;
+                }
+            }
+
             if (agxGroupType == "1" & groupLastUpdate != "1" || agxGroupType != "1" & groupLastUpdate == "1") //AGX: Monitor group to see if we need to refresh window
             {
                 updateButtons();

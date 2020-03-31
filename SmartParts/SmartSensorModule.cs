@@ -124,8 +124,6 @@ namespace Lib
         protected void initLight(bool b, string lightName)
         {
             Log.Info("initLight:  b: " + b.ToString() + "   lightName: " + lightName);
-            displayAllComponents();
-
 
             Transform lightTransform = part.FindModelTransform(lightName);
             if (!lightTransform)
@@ -133,6 +131,9 @@ namespace Lib
                 Log.Info("lightTransform: " + lightName + " not found");
                 return;
             }
+
+            displayAllComponents();
+
             if (b)
             {
                 Log.Info("Creating gameObject");
@@ -163,7 +164,7 @@ namespace Lib
 
         protected void lightsOn(Utility.LightColor color = Utility.LightColor.WHITE)
         {
-            if (part == null) return;
+            if (!lightComponentOn) return;
             //Switch on model lights
             Utility.switchEmissive(this, lightComponentOn, true, color);
             //Utility.switchLight(this.part, "light-go", true);
@@ -173,7 +174,7 @@ namespace Lib
 
         protected void lightsOff()
         {
-            if (part == null) return;
+            if (!lightComponentOn) return;
             //Switch off model lights
             Utility.switchEmissive(this, lightComponentOn, false);
             //Utility.switchLight(this.part, "light-go", false);
