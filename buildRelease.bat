@@ -53,8 +53,6 @@ del ..\GameData\SmartParts\Parts\Valve\*.tga
 copy /Y "%~dp0..\License.txt" "..\GameData\SmartParts"
 copy /Y "%~dp0..\README.md" "..\GameData\SmartParts"
 
-copy /Y MiniAVC.dll  "..\GameData\SmartParts"
-
 cd ..
 
 set FILE="%RELEASEDIR%\SmartParts-%VERSION%.zip"

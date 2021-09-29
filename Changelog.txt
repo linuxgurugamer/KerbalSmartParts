@@ -251,3 +251,8 @@ Taken over by LinuxGurugamer here
 
 1.9.16.1
 	Fixed prox sensor patch to not add to command pods which also have built-in decouplers
+
+1.9.16.2
+	Changed OnGUI to FixedUpdate in Speedometer.cs
+	Added AssemblyFileVersion
+	Updated version file for 1.12

@@ -300,7 +300,8 @@ namespace Lib
             doUpdateEditor = false;
         }
 
-        private void OnGUI()
+        //private void OnGUI()
+        private void FixedUpdate()
         {
             if (doUpdateEditor)
                 updateEditor();
