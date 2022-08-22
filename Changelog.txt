@@ -256,3 +256,6 @@ Taken over by LinuxGurugamer here
 	Changed OnGUI to FixedUpdate in Speedometer.cs
 	Added AssemblyFileVersion
 	Updated version file for 1.12
+
+1.9.17
+	Fixed memory leaks in several modules where GameEvents were being used and not released

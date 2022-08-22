@@ -50,6 +50,14 @@ namespace Lib
             initLight(true, activeLight);
             updateButtons();
         }
+
+        void OnDestroy()
+        {
+            GameEvents.CommNet.OnCommHomeStatusChange.Remove(onCommHomeStatusChange);
+            GameEvents.CommNet.OnCommStatusChange.Remove(onCommStatusChange);
+            GameEvents.CommNet.OnNetworkInitialized.Remove(onNetworkInitialized);
+        }
+
         private const int PHYSICSWAIT = 1;
         int physicsCnt = 0;
         public override void OnUpdate()

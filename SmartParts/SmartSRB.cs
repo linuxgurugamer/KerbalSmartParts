@@ -279,7 +279,7 @@ namespace Lib
                 CheckEngine();
         }
 
-        void Destroy()
+        void OnDestroy()
         {
             GameEvents.onEditorPartPlaced.Remove(OnEditorPartPlaced);
         }

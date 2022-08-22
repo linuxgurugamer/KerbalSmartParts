@@ -113,6 +113,12 @@ namespace Lib
             }
         }
 
+        void OnDestroy()
+        {
+            GameEvents.onVesselChange.Remove(onVesselChange);
+        }
+
+
         public override void OnUpdate() {
             if (isOpen) {
                 double receivedRessource = 0;

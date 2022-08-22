@@ -60,12 +60,14 @@ namespace Lib
 
         #region Overrides
 
-        public override void OnStart(StartState state) {
+        public override void OnStart(StartState state)
+        {
             //Clear listeners if the scene changes. Will be recreated on new scene load
             GameEvents.onGameSceneLoadRequested.Add(clearListeners);
             //Redraw buttons
             updateButtons();
-            if (state != StartState.Editor) {
+            if (state != StartState.Editor)
+            {
                 //Force activation of proximity sensor upon load/unpack
                 this.part.force_activate();
                 //Register the listener
@@ -73,23 +75,28 @@ namespace Lib
             }
         }
 
-        public override void OnFixedUpdate() {
-            if(justRegistered){
+        public override void OnFixedUpdate()
+        {
+            if (justRegistered)
+            {
                 justRegistered = false;
             }
             //Update target distance and determine target window
             updateDistance();
             //If the device is armed, check for the trigger altitude
-            if (isArmed) {
+            if (isArmed)
+            {
                 //We're departing. Trigger at or beyond target distance
-                if (direction != "Approach" && departing && Math.Abs((currentDistance + currentWindow) - meterDistance) < currentWindow) {
+                if (direction != "Approach" && departing && Math.Abs((currentDistance + currentWindow) - meterDistance) < currentWindow)
+                {
                     Log.Info("Proximity alert. Action fired on " + this.vessel.name + " on channel " + this.channel);
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
                     isArmed = false;
                 }
                 //We're approaching. Trigger at or closer than target distance
-                else if (direction != "Departure" && !departing && Math.Abs((currentDistance - currentWindow) - meterDistance) < currentWindow) {
+                else if (direction != "Departure" && !departing && Math.Abs((currentDistance - currentWindow) - meterDistance) < currentWindow)
+                {
                     Log.Info("Proximity alert. Action fired on " + this.vessel.name + " on channel " + this.channel);
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
@@ -98,13 +105,17 @@ namespace Lib
             }
 
             //If auto reset is enabled, wait for departure from the target window and rearm
-            if (!isArmed & autoReset) {
-                if (!isArmed & autoReset) {
-                    if (departing && Math.Abs((currentDistance + currentWindow) - meterDistance) > currentWindow) {
+            if (!isArmed & autoReset)
+            {
+                if (!isArmed & autoReset)
+                {
+                    if (departing && Math.Abs((currentDistance + currentWindow) - meterDistance) > currentWindow)
+                    {
                         Log.Info("Proximity sensor reset on " + this.vessel.name);
                         isArmed = true;
                     }
-                    else if (!departing && Math.Abs((currentDistance - currentWindow) - meterDistance) > currentWindow) {
+                    else if (!departing && Math.Abs((currentDistance - currentWindow) - meterDistance) > currentWindow)
+                    {
                         Log.Info("Proximity sensor reset on " + this.vessel.name);
                         isArmed = true;
                     }
@@ -112,18 +123,23 @@ namespace Lib
             }
         }
 
-        public override void OnUpdate() {
+        public override void OnUpdate()
+        {
             //If this proximity sensor isn't registered, register it now
-            if (ProxChannel.Listeners.Any(listener => listener.vessel.id == this.vessel.id && listener.channel == this.channel) == false) {
+            if (ProxChannel.Listeners.Any(listener => listener.vessel.id == this.vessel.id && listener.channel == this.channel) == false)
+            {
                 registerListener();
             }
             //In order for physics to take effect on jettisoned parts, the staging event has to be fired from OnUpdate
-            if (fireNextupdate && !justRegistered) {
+            if (fireNextupdate && !justRegistered)
+            {
                 int groupToFire = 0; //AGX: need to send correct group
-                if (AGXInterface.AGExtInstalled()) {
+                if (AGXInterface.AGExtInstalled())
+                {
                     groupToFire = int.Parse(agxGroupType);
                 }
-                else {
+                else
+                {
                     groupToFire = int.Parse(group);
                 }
                 Helper.fireEvent(this.part, groupToFire, (int)agxGroupNum);
@@ -136,12 +152,14 @@ namespace Lib
         #region Events
 
         [KSPAction("Activate Detection")]
-        public void doActivateAG(KSPActionParam param) {
+        public void doActivateAG(KSPActionParam param)
+        {
             isArmed = true;
         }
 
         [KSPAction("Deactivate Detection")]
-        public void doDeActivateAG(KSPActionParam param) {
+        public void doDeActivateAG(KSPActionParam param)
+        {
             isArmed = false;
         }
 
@@ -149,7 +167,8 @@ namespace Lib
 
         #region Methods
 
-        private void updateButtons() {
+        private void updateButtons()
+        {
             //Change to AGX buttons if AGX installed
             if (AGXInterface.AGExtInstalled())
             {
@@ -184,7 +203,8 @@ namespace Lib
             }
         }
 
-        private void updateDistance() {
+        private void updateDistance()
+        {
             double testDistance = 0;
             double lastDistance = 0;
             ProxSensor closestSensor = null;
@@ -193,11 +213,14 @@ namespace Lib
             lastDistance = currentDistance;
 
             //Find closest target on our channel and set closestDistance
-            foreach (var listener in ProxChannel.Listeners.ToList()) {
-                if (this.vessel.id != listener.vessel.id) {
+            foreach (var listener in ProxChannel.Listeners.ToList())
+            {
+                if (this.vessel.id != listener.vessel.id)
+                {
                     testDistance = Vector3d.Distance(this.vessel.GetWorldPos3D(), listener.vessel.GetWorldPos3D());
                     //Set distance and listener to the values from the closest non-self sensor on the same channel as us
-                    if (listener.channel == this.channel && (testDistance < currentDistance || closestSensor == null)) {
+                    if (listener.channel == this.channel && (testDistance < currentDistance || closestSensor == null))
+                    {
                         closestSensor = listener;
                         currentDistance = testDistance;
                     }
@@ -205,7 +228,8 @@ namespace Lib
             }
 
             //If no sensors detected, proceed no further
-            if (closestSensor == null) {
+            if (closestSensor == null)
+            {
                 return;
             }
 
@@ -216,39 +240,48 @@ namespace Lib
             //If the target was just registered (AKA just entered 2.5km), it's velocity measurements are innacurate. Manually set to 0 until next pass.
             currentWindow = (closestSensor.justRegistered ? 0 : Math.Abs(currentDistance - lastDistance) * 1.05);
             //We now have one data point. Remove the justRegistered flag for the next pass
-            if (closestSensor.justRegistered) {
+            if (closestSensor.justRegistered)
+            {
                 Log.Info(closestSensor.vessel.name + " inelligible for proximity detection this time. Waiting for next pass.");
             }
         }
 
-        public void Update() { //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
+        public void Update()
+        { //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
             if (agxGroupType == "1" & groupLastUpdate != "1" || agxGroupType != "1" & groupLastUpdate == "1") //AGX: Monitor group to see if we need to refresh window
             {
                 updateButtons();
                 refreshPartWindow();
-                if (agxGroupType == "1") {
+                if (agxGroupType == "1")
+                {
                     groupLastUpdate = "1";
                 }
-                else {
+                else
+                {
                     groupLastUpdate = "0";
                 }
             }
         }
 
-        public void OnDestroy() {
+        public void OnDestroy()
+        {
+            GameEvents.onGameSceneLoadRequested.Remove(clearListeners);
             GameEvents.onGameSceneLoadRequested.Remove(clearListeners);
             deregisterListener(this);
         }
 
-        public void clearListeners(GameScenes scene) {
+        public void clearListeners(GameScenes scene)
+        {
             //On scene change, clear out all of the registered listeners
             ProxChannel.Listeners.Clear();
             ProxChannel.Listeners.TrimExcess();
         }
 
-        public void registerListener() {
+        public void registerListener()
+        {
             //Remove duplicate entries from the list
-            if (ProxChannel.Listeners.Any(listener => listener.vessel.id == this.vessel.id && listener.channel == this.channel) == true) {
+            if (ProxChannel.Listeners.Any(listener => listener.vessel.id == this.vessel.id && listener.channel == this.channel) == true)
+            {
                 return;
             }
             Log.Info(this.vessel.vesselName + " proximity alarm has been registered on channel " + this.channel);
@@ -257,28 +290,34 @@ namespace Lib
             justRegistered = true;
         }
 
-        public void deregisterListener(ProxSensor sensor) {
-            if (ProxChannel.Listeners.Any(listener => listener.vessel.id == this.vessel.id && listener.channel == this.channel) == true) {
+        public void deregisterListener(ProxSensor sensor)
+        {
+            if (ProxChannel.Listeners.Any(listener => listener.vessel.id == this.vessel.id && listener.channel == this.channel) == true)
+            {
                 Log.Info(sensor.vessel.vesselName + " proximity alarm has been deregistered on channel " + sensor.channel);
                 ProxChannel.Listeners.Remove(sensor);
                 ProxChannel.Listeners.TrimExcess();
             }
         }
 
-        private void OnDetach(bool first) {
+        private void OnDetach(bool first)
+        {
             //Remove this prox sensor from listener list
             deregisterListener(this);
         }
 
-        public void onGUI() {
+        public void onGUI()
+        {
             //Update buttons
             updateButtons();
         }
 
-        private void refreshPartWindow() { //AGX: Refresh right-click part window to show/hide Groups slider
+        private void refreshPartWindow()
+        { //AGX: Refresh right-click part window to show/hide Groups slider
             UIPartActionWindow[] partWins = FindObjectsOfType<UIPartActionWindow>();
             //Log.Info("Wind count " + partWins.Count());
-            foreach (UIPartActionWindow partWin in partWins) {
+            foreach (UIPartActionWindow partWin in partWins)
+            {
                 partWin.displayDirty = true;
             }
         }

@@ -129,6 +129,11 @@ namespace Lib
             initLight(true, "light-go");
         }
 
+        void OnDestroy()
+        {
+            GameEvents.onVesselChange.Remove(onVesselChange);
+        }
+
         public override void OnActive()
         {
             //If staging enabled, set timer
