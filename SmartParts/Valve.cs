@@ -22,16 +22,16 @@ namespace Lib
         static float maxSpeedY = -1.0f;
         KSPParticleEmitter valveEffect = null;
 
-        [KSPField(isPersistant = true, guiName = "Opened")] // remember if the part is open
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiName = "Opened")] // remember if the part is open
         public bool isOpen = false;
 
-        [KSPField(isPersistant = true)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true)]
         private Boolean allowStage = true;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Outlet"), UI_FloatRange(minValue = 0f, maxValue = 100f, stepIncrement = 5f)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Outlet"), UI_FloatRange(minValue = 0f, maxValue = 100f, stepIncrement = 5f)]
         public float force = 10;
 
-        [KSPField(isPersistant = false)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = false)]
         public int facing;
 
         #endregion
@@ -39,17 +39,17 @@ namespace Lib
 
         #region Events
 
-        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Enable Staging")]
+        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Enable Staging", guiActiveUnfocused = true)]
         public void activateStaging() {
             enableStaging();
         }
 
-        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Disable Staging")]
+        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Disable Staging", guiActiveUnfocused = true)]
         public void deactivateStaging() {
             disableStaging();
         }
 
-        [KSPEvent(guiName = "Toggle", guiActive = true, guiActiveEditor = false)]
+        [KSPEvent(guiName = "Toggle", guiActive = true, guiActiveEditor = false, guiActiveUnfocused = true)]
         public void toggleValve() {
             setValve(!isOpen);
         }

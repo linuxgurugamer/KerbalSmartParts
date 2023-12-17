@@ -19,58 +19,58 @@ namespace Lib
     {
         #region Fields
         // remember the time wehen the countdown was started
-        [KSPField(isPersistant = true, guiActive = false)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = false)]
         private double triggerTime = 0;
 
         // Delay in seconds. Used for precise measurement
-        [KSPField(isPersistant = true, guiActiveEditor = false, guiActive = false, guiName = "Seconds", guiFormat = "F1"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActiveEditor = false, guiActive = false, guiName = "Seconds", guiFormat = "F1"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 120f, incrementLarge = 20f, incrementSmall = 1f, incrementSlide = .05f, sigFigs = 1)]
         public float triggerDelaySeconds = 0;
 
         // Delay in minutes. Used for longer term measurement
-        [KSPField(isPersistant = true, guiActiveEditor = false, guiActive = false, guiName = "Minutes", guiFormat = "F2"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActiveEditor = false, guiActive = false, guiName = "Minutes", guiFormat = "F2"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 360f, incrementLarge = 60f, incrementSmall = 5f, incrementSlide = .25f, sigFigs = 2)]
         public float triggerDelayMinutes = 0;
 
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Remaining Time", guiFormat = "F2")]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiName = "Remaining Time", guiFormat = "F2")]
         private double remainingTime = 0;
 
-        [KSPField(isPersistant = true)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true)]
         private Boolean allowStage = true;
 
-        [KSPField(isPersistant = true)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true)]
         private Boolean useSeconds = true;
         #endregion
 
 
         #region Events
-        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Use Seconds")]
+        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Use Seconds", guiActiveUnfocused = true)]
         public void setSeconds()
         {
             useSeconds = true;
             updateButtons();
         }
 
-        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Use Minutes")]
+        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Use Minutes", guiActiveUnfocused = true)]
         public void setMinutes()
         {
             useSeconds = false;
             updateButtons();
         }
 
-        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Enable Staging")]
+        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Enable Staging", guiActiveUnfocused = true)]
         public void activateStaging()
         {
             enableStaging();
         }
 
-        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Disable Staging")]
+        [KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "Disable Staging", guiActiveUnfocused = true)]
         public void deactivateStaging()
         {
             disableStaging();
         }
 
-        [KSPEvent(guiName = "Start Countdown", guiActive = true)]
+        [KSPEvent(guiName = "Start Countdown", guiActive = true, guiActiveUnfocused = true)]
         public void activateTimer()
         {
             reset();
@@ -84,7 +84,7 @@ namespace Lib
             setTimer();
         }
 
-        [KSPEvent(guiName = "Reset", guiActive = true)]
+        [KSPEvent(guiName = "Reset", guiActive = true, guiActiveUnfocused = true)]
         public void resetTimer()
         {
             reset();

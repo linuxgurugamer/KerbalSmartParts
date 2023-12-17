@@ -16,19 +16,19 @@ namespace Lib
 
         #region Fields
 
-        [KSPField(isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "Resource"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "Resource"),
             UI_ChooseOption(
                 options = new string[] { "Empty" }
             )]
         public string monitoredResource = "Empty";
 
-        [KSPField(guiActive = true, guiActiveEditor = false, guiName = "Resource")]
+        [KSPField(guiActiveUnfocused=true,guiActive = true, guiActiveEditor = false, guiName = "Resource")]
         public String resourceFlightDisplay = "Empty";
 
-        [KSPField(guiActive = true, guiActiveEditor = false, guiName = "Trigger when")]
+        [KSPField(guiActiveUnfocused=true,guiActive = true, guiActiveEditor = false, guiName = "Trigger when")]
         public string triggerFlightDisplay = "Decreasing";
 
-        [KSPField(guiActive = true, guiActiveEditor = false, guiName = "Monitor")]
+        [KSPField(guiActiveUnfocused=true,guiActive = true, guiActiveEditor = false, guiName = "Monitor")]
         public string monitorFlightDisplay = "Single Part";
 
         [KSPField]
@@ -37,10 +37,10 @@ namespace Lib
         [KSPField]
         public string resourceToMonitor = "";
 
-        [KSPField(isPersistant = true)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true)]
         public bool decreasing = true;
 
-        [KSPEvent(guiActiveEditor = true, active = true, guiName = "Trigger when Decreasing")]
+        [KSPEvent(guiActiveEditor = true, active = true, guiName = "Trigger when Decreasing", guiActiveUnfocused = true)]
         public void setDecreasing()
         {
             decreasing = !decreasing;
@@ -53,10 +53,10 @@ namespace Lib
         public enum monitoredParts { single, stage, vessel }
 
 
-        [KSPField(isPersistant = true)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true)]
         public monitoredParts singlePart = monitoredParts.single;
 
-        [KSPEvent(guiActiveEditor = true, active = true, guiName = "Single Part")]
+        [KSPEvent(guiActiveEditor = true, active = true, guiName = "Single Part", guiActiveUnfocused = true)]
         public void setSinglePart()
         {
             switch (singlePart)
@@ -76,7 +76,7 @@ namespace Lib
             }
         }
 
-        [KSPField(isPersistant = true, guiActiveEditor = false, guiActive = true, guiName = "Percentage", guiFormat = "F0", guiUnits = "%"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActiveEditor = false, guiActive = true, guiName = "Percentage", guiFormat = "F0", guiUnits = "%"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 100f, incrementSlide = 1f)]
         public float activationPercentage = 0;
 

@@ -19,20 +19,20 @@ namespace Lib
         #region Fields
 
 
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Kilometers", guiFormat = "F0", guiUnits = "km"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiName = "Kilometers", guiFormat = "F0", guiUnits = "km"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 1000f, incrementLarge = 100f, incrementSmall = 25f, incrementSlide = 1f)]
         public float kilometerHeight = 0;
 
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Meters", guiFormat = "F0", guiUnits = "m"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiName = "Meters", guiFormat = "F0", guiUnits = "m"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 1000f, incrementLarge = 100f, incrementSmall = 25f, incrementSlide = 1f)]
         public float meterHeight = 0;
   
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
             UI_ChooseOption(options = new string[] { "All", "Ascent", "Descent" })]
         public string direction = "All";
 
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Use AGL"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Use AGL"),
             UI_Toggle(disabledText = "False", enabledText = "True")]
         public bool useAGL = true;
         #endregion

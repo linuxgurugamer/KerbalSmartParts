@@ -15,14 +15,14 @@ namespace Lib
 {
     public class FuelController : SmartSensorModuleBase
     {
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Flow enabled")]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Flow enabled")]
         bool flowEnabled = false;
 
         public override void OnStart(PartModule.StartState state) {
             this.part.fuelCrossFeed = flowEnabled;
         }
 
-        [KSPEvent(guiName = "Toggle Crossfeed", guiActiveEditor = true, guiActive = true)]
+        [KSPEvent(guiName = "Toggle Crossfeed", guiActiveEditor = true, guiActive = true, guiActiveUnfocused = true)]
         public void toggleCrossfeed() {
             flowEnabled = !flowEnabled;
             this.part.fuelCrossFeed = flowEnabled;

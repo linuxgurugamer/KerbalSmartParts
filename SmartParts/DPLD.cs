@@ -14,18 +14,18 @@ namespace Lib
         #region Fields
 
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
             UI_ChooseOption(options = new string[] { "KSC loss", "Total Loss", "Initialized" })]
         //UI_ChooseOption(options = new string[] { "KSC loss", "Total Comm Loss", "Network Initialized" })]
         public string actionMode = "KSC loss";
 
 
-        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Lights On")]
+        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Lights On", guiActiveUnfocused=true)]
         public void doLightsOn()
         {
             lightsOn();
         }
-        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Lights Off")]
+        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Lights Off", guiActiveUnfocused = true)]
         public void doLightsOff()
         {
             lightsOff();

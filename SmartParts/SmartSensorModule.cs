@@ -23,7 +23,7 @@ namespace Lib
 
 
         #region Fields
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Group"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Group"),
             UI_ChooseOption(
             options = new String[] {
                 "0",
@@ -67,7 +67,7 @@ namespace Lib
         public string group = "0";
 
         //AGXGroup shows if AGX installed and hides Group above
-        [KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false, guiName = "Group"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = false, guiActiveEditor = false, guiName = "Group"),
             UI_ChooseOption(
             options = new String[] {
                 "0",
@@ -93,17 +93,17 @@ namespace Lib
         public string agxGroupType = "0";
 
         // AGX Action groups, use own slider if selected, only show this field if AGXGroup above is 1
-        [KSPField(isPersistant = true, guiActiveEditor = false, guiActive = false, guiName = "Group:", guiFormat = "N0"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActiveEditor = false, guiActive = false, guiName = "Group:", guiFormat = "N0"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 1f, maxValue = 250f, incrementLarge = 75f, incrementSmall = 25f, incrementSlide = 1f)]
         public float agxGroupNum = 1;
 
         // following not for:  RadioControl
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Active"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Active"),
             UI_Toggle(disabledText = "False", enabledText = "True")]
         public bool isArmed = true;
 
         // following not for: Stager, Timer
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Auto Reset"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Auto Reset"),
             UI_Toggle(disabledText = "False", enabledText = "True")]
         public bool autoReset = false;
         #endregion

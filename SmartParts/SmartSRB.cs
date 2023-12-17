@@ -5,17 +5,17 @@ namespace Lib
 {
     class SmartSRBBase : SmartSensorModuleBase
     {
-        [KSPField(isPersistant = true, guiActive = true, guiName = "SRB TWR %", guiFormat = "F0", guiUnits = "%"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiName = "SRB TWR %", guiFormat = "F0", guiUnits = "%"),
         UI_FloatEdit(scene = UI_Scene.All, minValue = 100f, maxValue = 150f, incrementSlide = 1f)]
         public float StagePercentageMass = 100;
 
-        [KSPField(isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "Trigger on Flameout"), UI_Toggle()]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "Trigger on Flameout"), UI_Toggle()]
         public bool triggerOnFlameout = true;
 
-        [KSPField(isPersistant = false, guiActive = true, guiName = "SRB TWR", guiFormat = "F2")]
+        [KSPField(guiActiveUnfocused=true,isPersistant = false, guiActive = true, guiName = "SRB TWR", guiFormat = "F2")]
         private double displayTWR = 0;
 
-        [KSPField(guiActive = false, guiName = "Fire next update")]
+        [KSPField(guiActiveUnfocused=true,guiActive = false, guiName = "Fire next update")]
         private Boolean fireNextupdate = false;
 
         #region Variables
@@ -287,15 +287,15 @@ namespace Lib
 
     class EmbeddedSmartSRB : SmartSRBBase
     {
-        [KSPField(isPersistant = false)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = false)]
         public string guiGroup = "EmbededSmartSRB";
-        [KSPField(isPersistant = false)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = false)]
         public string guiGroupDisplayName = "Smart SRB";
 
-        [KSPField(isPersistant = true)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true)]
         public bool isResearched = false;
 
-        [KSPField(isPersistant = false)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = false)]
         public string researchPartName = "km_smart_srb";
 
         public override void OnStart(StartState state)

@@ -16,42 +16,42 @@ namespace Lib
         const float HIGH_MAXSPEED = 5000;
         #region Fields
 
-        [KSPField(isPersistant = true, guiActiveEditor = true, guiActive = true, guiName = "Speed", guiFormat = "F0", guiUnits = "m/s"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActiveEditor = true, guiActive = true, guiName = "Speed", guiFormat = "F0", guiUnits = "m/s"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = -LOW_MAXSPEED, maxValue = LOW_MAXSPEED, incrementLarge = 100f, incrementSmall = 10f, incrementSlide = 1f)]
         public float meterPerSecondSpeed = 0;
 
-        [KSPField(isPersistant = true, guiActiveEditor = false, guiActive = false, guiName = "Speed", guiFormat = "F0", guiUnits = "m/s"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActiveEditor = false, guiActive = false, guiName = "Speed", guiFormat = "F0", guiUnits = "m/s"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = -HIGH_MAXSPEED, maxValue = HIGH_MAXSPEED, incrementLarge = 500f, incrementSmall = 50f, incrementSlide = 5f)]
         public float meterPerSecondSpeedHigh = 0;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Trigger on"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Trigger on"),
             UI_ChooseOption(options = new string[] { "All", "Increasing", "Decreasing" })]
         public string direction = "All";
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Speed mode"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Speed mode"),
             UI_ChooseOption(options = new string[] { "Surface", "Horizontal", "Vertical", "Orbital" })]
         public string speedMode = "Surface";
 
-        [KSPField(guiActive = true, guiName = "Speed")]
+        [KSPField(guiActiveUnfocused=true,guiActive = true, guiName = "Speed")]
         public double speed = 0;
-        [KSPField(guiActive = true, guiName = "Last speed")]
+        [KSPField(guiActiveUnfocused=true,guiActive = true, guiName = "Last speed")]
         private double lastSpeed = 0;
 
-        [KSPField(guiActive = true, guiName = "Speed increasing")]
+        [KSPField(guiActiveUnfocused=true,guiActive = true, guiName = "Speed increasing")]
         private Boolean isSpeedIncreasing = false;
 
-        [KSPField(guiActive = true, guiName = "Passing threshold")]
+        [KSPField(guiActiveUnfocused=true,guiActive = true, guiName = "Passing threshold")]
         private Boolean isPassingThreshold = false;
 
-        [KSPField(guiActive = true, guiName = "Fire next update")]
+        [KSPField(guiActiveUnfocused=true,guiActive = true, guiName = "Fire next update")]
         private Boolean fireNextupdate = false;
 
-        [KSPField(guiActive = true, guiName = "Group last update")]
+        [KSPField(guiActiveUnfocused=true,guiActive = true, guiName = "Group last update")]
         private string groupLastUpdate = "0";
 
         #endregion
         #region Events
-        [KSPEvent(guiName = "Toggle max speed", guiActiveEditor = true)]
+        [KSPEvent(guiName = "Toggle max speed", guiActiveEditor = true, guiActiveUnfocused = true)]
         public void doToggleMaxSpeed()
         {
             maxSpeedLow = !maxSpeedLow;
@@ -72,7 +72,7 @@ namespace Lib
                 Events["doToggleMaxSpeed"].guiName = "Toggle max speed (currently: " + HIGH_MAXSPEED + ")";
         }
 
-        [KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false, guiName = "Active")]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = false, guiActiveEditor = false, guiName = "Active")]
         bool maxSpeedLow = true;
 
         [KSPAction("Activate Detection")]

@@ -1,10 +1,10 @@
 Klockheed Martian Engine Manufacture - Smart Parts Pack
 --------------------------------------------------------------
 
-Visit the official forum thread for more information: http://forum.kerbalspaceprogram.com/threads/64227
+Visit the official forum thread for more information: https://forum.kerbalspaceprogram.com/index.php?/topic/151340-14x-smart-parts-continued/
 
 
-Source: https://github.com/BrettWebb/KerbalSmartParts
+Source: https://github.com/linuxgurugamer/KerbalSmartParts
 
 Parts:
 

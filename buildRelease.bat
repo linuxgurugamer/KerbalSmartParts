@@ -1,12 +1,49 @@
-﻿rem
-
+﻿
 @echo off
+
+rem Put the following text into the Post-build event command line:
+rem without the "rem":
+
+rem start /D D:\Users\jbb\github\IFI-Life-Support /WAIT deploy.bat  $(TargetDir) $(TargetFileName)
+rem 
+rem if $(ConfigurationName) == Release (
+rem 
+rem start /D D:\Users\jbb\github\IFI-Life-Support /WAIT buildRelease.bat $(TargetDir) $(TargetFileName)
+rem 
+rem )
+
+
+rem Set variables here
+
+rem H is the destination game folder
+rem GAMEDIR is the name of the mod folder (usually the mod name)
+rem GAMEDATA is the name of the local GameData
+rem VERSIONFILE is the name of the version file, usually the same as GAMEDATA,
+rem    but not always
+rem LICENSE is the license file
+rem README is the readme file
+
+set GAMEDIR=SmartParts
+set GAMEDATA="GameData\"
+set VERSIONFILE=%GAMEDIR%.version
+set LICENSE=License.txt
+set README=ReadMe.md
 
 set RELEASEDIR=d:\Users\jbb\release
 set ZIP="c:\Program Files\7-zip\7z.exe"
 
+rem Copy files to GameData locations
 
-set VERSIONFILE=SmartParts.version
+copy /Y "%1%2" "%GAMEDATA%\%GAMEDIR%\Plugins"
+copy /Y %VERSIONFILE% %GAMEDATA%\%GAMEDIR%
+
+if "%LICENSE%" NEQ "" copy /y  %LICENSE% %GAMEDATA%\%GAMEDIR%
+if "%README%" NEQ "" copy /Y %README% %GAMEDATA%\%GAMEDIR%
+
+rem Get Version info
+
+copy %VERSIONFILE% tmp.version
+set VERSIONFILE=tmp.version
 rem The following requires the JQ program, available here: https://stedolan.github.io/jq/download/
 c:\local\jq-win64  ".VERSION.MAJOR" %VERSIONFILE% >tmpfile
 set /P major=<tmpfile
@@ -20,43 +57,18 @@ set /P patch=<tmpfile
 c:\local\jq-win64  ".VERSION.BUILD"  %VERSIONFILE% >tmpfile
 set /P build=<tmpfile
 del tmpfile
+del tmp.version
 set VERSION=%major%.%minor%.%patch%
 if "%build%" NEQ "0"  set VERSION=%VERSION%.%build%
 
-echo %VERSION%
-
-mkdir ..\GameData\SmartParts
-mkdir ..\GameData\SmartParts\Parts
-mkdir ..\GameData\SmartParts\Plugins
-mkdir ..\GameData\SmartParts\Sounds
+echo Version:  %VERSION%
 
 
-del /Q ..\GameData\SmartParts
-del /Q ..\GameData\SmartParts\Parts
-del /Q ..\GameData\SmartParts\Plugins
-del /Q ..\GameData\SmartParts\Sounds
+rem Build the zip FILE
+cd %GAMEDATA%\..
 
-
-copy /Y "%~dp0..\bin\Release\SmartParts.dll" "..\GameData\SmartParts\Plugins"
-
-copy /Y "%~dp0SmartParts.version" "..\GameData\SmartParts"
-
-xcopy /Y /S "%~dp0..\OrigParts" "..\GameData\SmartParts\Parts"
-
-
-del ..\GameData\SmartParts\Parts\Fuel-Breakers\*.tga
-del ..\GameData\SmartParts\Parts\Fuel-Controller\*.tga
-del ..\GameData\SmartParts\Parts\Smart-Controller\*.tga
-del ..\GameData\SmartParts\Parts\Valve\*.tga
-
-
-copy /Y "%~dp0..\License.txt" "..\GameData\SmartParts"
-copy /Y "%~dp0..\README.md" "..\GameData\SmartParts"
-
-cd ..
-
-set FILE="%RELEASEDIR%\SmartParts-%VERSION%.zip"
+set FILE="%RELEASEDIR%\%GAMEDIR%-%VERSION%.zip"
 IF EXIST %FILE% del /F %FILE%
-%ZIP% a -tzip %FILE% Gamedata\SmartParts
+%ZIP% a -tzip %FILE% GameData
 
 pause

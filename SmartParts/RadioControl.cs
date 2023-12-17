@@ -20,12 +20,12 @@ namespace Lib
 
     public class RadioControl : SmartSensorModuleBase
     {
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Sync. Head."),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Sync. Head."),
             UI_Toggle(disabledText = "Disabled", enabledText = "Enabled")]
         private bool enableSync = false;
         private int updateCounter = 0;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Channel"), UI_FloatRange(minValue = 1f, maxValue = 20f, stepIncrement = 1f)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Channel"), UI_FloatRange(minValue = 1f, maxValue = 20f, stepIncrement = 1f)]
         public float channel = 1;
 
 
@@ -153,7 +153,7 @@ namespace Lib
             transmitCommand(16);
         }
 
-        [KSPEvent(guiName = "Transmit Command", guiActive = true)]
+        [KSPEvent(guiName = "Transmit Command", guiActive = true, guiActiveUnfocused = true)]
         public void transmit_GUI()
         {
             if (AGXInterface.AGExtInstalled())
@@ -166,7 +166,7 @@ namespace Lib
             }
         }
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Throttle"), UI_FloatRange(minValue = 0f, maxValue = 1f, stepIncrement = 0.05f)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Throttle"), UI_FloatRange(minValue = 0f, maxValue = 1f, stepIncrement = 0.05f)]
         public float throttle = 1;
 
 
@@ -176,7 +176,7 @@ namespace Lib
             transmitThrottle();
         }
 
-        [KSPEvent(guiName = "Transmit Throttle", guiActive = true)]
+        [KSPEvent(guiName = "Transmit Throttle", guiActive = true, guiActiveUnfocused = true)]
         public void transmit_Throttle()
         {
             transmitThrottle();
@@ -188,7 +188,7 @@ namespace Lib
             transmitRotation(this.vessel.GetTransform().rotation, true);
         }
 
-        [KSPEvent(guiName = "Match Heading", guiActive = true)]
+        [KSPEvent(guiName = "Match Heading", guiActive = true, guiActiveUnfocused = true)]
         public void transmit_pro_rotation()
         {
             transmitRotation(this.vessel.GetTransform().rotation, true);
@@ -200,7 +200,7 @@ namespace Lib
             transmitRotationTo (vessel.findWorldCenterOfMass(), true);
         }
 
-        [KSPEvent(guiName = "Head to vessel", guiActive = true)]
+        [KSPEvent(guiName = "Head to vessel", guiActive = true, guiActiveUnfocused=true)]
         public void transmit_rotateTowardsAG ()
         {
             transmitRotationTo (vessel.findWorldCenterOfMass(), true);

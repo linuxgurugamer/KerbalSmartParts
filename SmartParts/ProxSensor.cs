@@ -19,22 +19,22 @@ namespace Lib
 
         #region Fields
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Channel"), UI_FloatRange(minValue = 1f, maxValue = 20f, stepIncrement = 1f)]
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Channel"), UI_FloatRange(minValue = 1f, maxValue = 20f, stepIncrement = 1f)]
         public float channel = 1;
 
-        [KSPField(isPersistant = true, guiActiveEditor = true, guiActive = true, guiName = "Distance", guiFormat = "F0", guiUnits = "m"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActiveEditor = true, guiActive = true, guiName = "Distance", guiFormat = "F0", guiUnits = "m"),
      UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 2000f, incrementLarge = 250f, incrementSmall = 25f, incrementSlide = 1f)]
         public float meterDistance = 0;
 
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
             UI_ChooseOption(options = new string[] { "Both", "Approach", "Departure" })]
         public string direction = "Both";
 
 
 
         /* DEBUG CODE
-        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Get Count")]
+        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Get Count", guiActiveUnfocused=true)]
         public void getCount() {
             Log.Info("Debug v1");
             Log.Info("Current Listener Count");

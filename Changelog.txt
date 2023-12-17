@@ -259,3 +259,6 @@ Taken over by LinuxGurugamer here
 
 1.9.17
 	Fixed memory leaks in several modules where GameEvents were being used and not released
+
+1.10.0
+	Added ability to control the part from EVA'd Kerbal

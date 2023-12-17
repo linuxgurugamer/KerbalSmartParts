@@ -12,22 +12,22 @@ namespace Lib
 
         #region Fields
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Element"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Element"),
             UI_ChooseOption(options = new string[] { "Apoapsis", "Periapsis" })]
         public string element = "Apoapsis";
 
-        [KSPField(isPersistant = false, guiActive = true, guiName = "Altitude", guiFormat = "N3", guiUnits = "km")]
+        [KSPField(guiActiveUnfocused=true,isPersistant = false, guiActive = true, guiName = "Altitude", guiFormat = "N3", guiUnits = "km")]
         private double displayAlt = 0;
 
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Kilometers", guiFormat = "F0", guiUnits = "km"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiName = "Kilometers", guiFormat = "F0", guiUnits = "km"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 1000f, incrementLarge = 100f, incrementSmall = 25f, incrementSlide = 1f)]
         public float kilometerHeight = 0;
 
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Meters", guiFormat = "F0", guiUnits = "m"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiName = "Meters", guiFormat = "F0", guiUnits = "m"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 1000f, incrementLarge = 100f, incrementSmall = 25f, incrementSlide = 1f)]
         public float meterHeight = 0;
 
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
+        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
             UI_ChooseOption(options = new string[] { "All", "Increasing", "Decreasing" })]
         public string direction = "All";
 
