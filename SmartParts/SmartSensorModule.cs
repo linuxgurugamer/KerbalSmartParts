@@ -1,4 +1,5 @@
-﻿using System;
+using KSP.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace Lib
 
         //Highlighting.Highlighter a;
 
-
+        #region NO_LOCALIZATION
         #region Fields
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Group"),
             UI_ChooseOption(
@@ -44,26 +45,29 @@ namespace Lib
                 "15",
                 "16"
             },
+        #endregion
             display = new String[] {
-                "Stage",
-                "AG1",
-                "AG2",
-                "AG3",
-                "AG4",
-                "AG5",
-                "AG6",
-                "AG7",
-                "AG8",
-                "AG9",
-                "AG10",
-                "Lights",
-                "RCS",
-                "SAS",
-                "Brakes",
-                "Abort",
-                "Gear"
+                "#LOC_SmartParts_10",
+                "#LOC_SmartParts_39",
+                "#LOC_SmartParts_40",
+                "#LOC_SmartParts_41",
+                "#LOC_SmartParts_42",
+                "#LOC_SmartParts_43",
+                "#LOC_SmartParts_44",
+                "#LOC_SmartParts_45",
+                "#LOC_SmartParts_46",
+                "#LOC_SmartParts_47",
+                "#LOC_SmartParts_48",
+                "#LOC_SmartParts_49",
+                "#LOC_SmartParts_22",
+                "#LOC_SmartParts_23",
+                "#LOC_SmartParts_24",
+                "#LOC_SmartParts_25",
+                "#LOC_SmartParts_26"
             }
         )]
+
+        #region NO_LOCALIZATION
         public string group = "0";
 
         //AGXGroup shows if AGX installed and hides Group above
@@ -79,15 +83,16 @@ namespace Lib
                 "15",
                 "16"
             },
+        #endregion
             display = new String[] {
-                "Stage",
-                "Action Group:",
-                "Lights",
-                "RCS",
-                "SAS",
-                "Brakes",
-                "Abort",
-                "Gear"
+                "#LOC_SmartParts_10",
+                "#LOC_SmartParts_50",
+                "#LOC_SmartParts_49",
+                "#LOC_SmartParts_22",
+                "#LOC_SmartParts_23",
+                "#LOC_SmartParts_24",
+                "#LOC_SmartParts_25",
+                "#LOC_SmartParts_26"
             }
         )]
         public string agxGroupType = "0";
@@ -99,12 +104,12 @@ namespace Lib
 
         // following not for:  RadioControl
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Active"),
-            UI_Toggle(disabledText = "False", enabledText = "True")]
+            UI_Toggle(disabledText = "#LOC_SmartParts_4", enabledText = "#LOC_SmartParts_5")]
         public bool isArmed = true;
 
         // following not for: Stager, Timer
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Auto Reset"),
-            UI_Toggle(disabledText = "False", enabledText = "True")]
+            UI_Toggle(disabledText = "#LOC_SmartParts_4", enabledText = "#LOC_SmartParts_5")]
         public bool autoReset = false;
         #endregion
 
@@ -168,7 +173,7 @@ namespace Lib
             //Switch on model lights
             Utility.switchEmissive(this, lightComponentOn, true, color);
             //Utility.switchLight(this.part, "light-go", true);
-            Utility.playAnimationSetToPosition(this.part, "glow", 1);
+            Utility.playAnimationSetToPosition(this.part, Localizer.Format("#LOC_SmartParts_51"), 1);
             illuminated = true;
         }
 
@@ -178,7 +183,7 @@ namespace Lib
             //Switch off model lights
             Utility.switchEmissive(this, lightComponentOn, false);
             //Utility.switchLight(this.part, "light-go", false);
-            Utility.playAnimationSetToPosition(this.part, "glow", 0);
+            Utility.playAnimationSetToPosition(this.part, Localizer.Format("#LOC_SmartParts_51"), 0);
             illuminated = false;
         }
     }

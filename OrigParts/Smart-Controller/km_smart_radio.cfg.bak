@@ -1,0 +1,55 @@
+PART
+{
+	// Kerbal Space Program - Part Config
+	// Auto Stager
+	//
+	
+	// --- general parameters ---
+	name = km_smart_radio
+	module = Part
+	author = dtobi
+	
+	MODEL
+	{
+		model = SmartParts/Parts/Smart-Controller/km_smart_radio
+	}
+	// --- asset parameters ---
+	scale = 1.0
+	rescaleFactor = 1
+	
+	// --- editor parameters ---
+	TechRequired = scienceTech
+	entryCost = 4200
+	cost = 2750
+	category = Control
+	subcategory = 0
+	title = Radio-GAGA - A Radio for Action Groups
+	manufacturer = Orbital Intelligence
+	description = Transmits and receives commands between radios on the same channel for all vessels in rendering range (approx 2000m). It can set the heading of receiving vessels to the heading of the active vessel. It can also keep the headings synchronized (Sync. Head.).
+	tags = control radio
+	
+	// attachment rules: stack, srfAttach, allowStack, allowSrfAttach, allowCollision
+	attachRules = 0,1,0,0,0
+	
+	// definition format is Position X, Position Y, Position Z, Up X, Up Y, Up Z
+	node_attach = 0.0, 0.0	, 0.02, 0.0, 0.0, -1.0
+	
+	// --- standard part parameters ---
+	PhysicsSignificance = 1 
+	mass = 0.05
+	dragModelType = default
+	maximum_drag = 0.0001
+	minimum_drag = 0.0001
+	angularDrag = 0.0005
+	crashTolerance = 10
+	maxTemp = 1200
+	bulkheadProfiles = srf
+	
+	MODULE
+	{
+		name = RadioControl
+		group = 0
+		rcv_sound = SmartParts/Sounds/buzz
+	}
+	
+}

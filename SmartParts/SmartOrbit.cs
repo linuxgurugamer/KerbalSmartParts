@@ -1,3 +1,4 @@
+using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,8 @@ namespace Lib
         #region Fields
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Element"),
-            UI_ChooseOption(options = new string[] { "Apoapsis", "Periapsis" })]
-        public string element = "Apoapsis";
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_34", "#LOC_SmartParts_35" })]
+        public string element = "#LOC_SmartParts_34";
 
         [KSPField(guiActiveUnfocused=true,isPersistant = false, guiActive = true, guiName = "Altitude", guiFormat = "N3", guiUnits = "km")]
         private double displayAlt = 0;
@@ -28,8 +29,8 @@ namespace Lib
         public float meterHeight = 0;
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
-            UI_ChooseOption(options = new string[] { "All", "Increasing", "Decreasing" })]
-        public string direction = "All";
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_1", "#LOC_SmartParts_36", "#LOC_SmartParts_37" })]
+        public string direction = "#LOC_SmartParts_1";
 
 
         #endregion
@@ -66,7 +67,7 @@ namespace Lib
 
         public override void OnStart(StartState state)
         {
-            Log.setTitle("SmartOrbit");
+            Log.setTitle(Localizer.Format("#LOC_SmartParts_38"));
             Log.Info("Started");
 
             //Initial button layout
@@ -74,7 +75,7 @@ namespace Lib
             //Force activation no matter which stage it's on
             this.part.force_activate();
             updateButtons();
-            initLight(true, "light-go");
+            initLight(true, Localizer.Format("#LOC_SmartParts_33"));
         }
 
         public override void OnUpdate()
@@ -108,7 +109,7 @@ namespace Lib
             if (isArmed)
             {
                 //We're increasing. Trigger at or above target height
-                if (direction != "Decreasing" && increasing && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                if (direction != Localizer.Format("#LOC_SmartParts_37") && increasing && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
                 {
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
@@ -116,7 +117,7 @@ namespace Lib
                     isArmed = false;
                 }
                 //We're decreasing. Trigger at or below target height
-                else if (direction != "Increasing" && !increasing && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                else if (direction != Localizer.Format("#LOC_SmartParts_36") && !increasing && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
                 {
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
@@ -138,6 +139,8 @@ namespace Lib
                 }
             }
         }
+
+        #region NO_LOCALIZATION
         public void Update() //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
         {
             if (agxGroupType == "1" & groupLastUpdate != "1" || agxGroupType != "1" & groupLastUpdate == "1") //AGX: Monitor group to see if we need to refresh window
@@ -154,6 +157,7 @@ namespace Lib
                 }
             }
         }
+        #endregion
 
         private void refreshPartWindow() //AGX: Refresh right-click part window to show/hide Groups slider
         {
@@ -174,7 +178,7 @@ namespace Lib
         {
             double lastAlt = alt;
 
-            if (element == "Apoapsis")
+            if (element == Localizer.Format("#LOC_SmartParts_34"))
             {
                 alt = vessel.orbit.ApA;
             }
@@ -195,6 +199,7 @@ namespace Lib
             currentWindow = Math.Abs(lastAlt - alt);
         }
 
+        #region NO_LOCALIZATION
         private void updateButtons()
         {
             //Change to AGX buttons if AGX installed
@@ -230,6 +235,7 @@ namespace Lib
                 Fields["agxGroupNum"].guiActive = false;
             }
         }
+        #endregion
 
         private void onGUI()
         {

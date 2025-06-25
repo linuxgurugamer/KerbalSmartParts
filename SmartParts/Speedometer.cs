@@ -1,8 +1,9 @@
-﻿/*
+/*
  * Author: dtobi, Firov, dragonfi
  * This work is shared under Creative Commons CC BY-NC-SA 3.0 license.
  *
  */
+using KSP.Localization;
 using System;
 
 //using KSPAPIExtensions;
@@ -25,12 +26,12 @@ namespace Lib
         public float meterPerSecondSpeedHigh = 0;
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Trigger on"),
-            UI_ChooseOption(options = new string[] { "All", "Increasing", "Decreasing" })]
-        public string direction = "All";
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_1", "#LOC_SmartParts_36", "#LOC_SmartParts_37" })]
+        public string direction = "#LOC_SmartParts_1";
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Speed mode"),
-            UI_ChooseOption(options = new string[] { "Surface", "Horizontal", "Vertical", "Orbital" })]
-        public string speedMode = "Surface";
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_56", "#LOC_SmartParts_57", "#LOC_SmartParts_58", "#LOC_SmartParts_59" })]
+        public string speedMode = "#LOC_SmartParts_56";
 
         [KSPField(guiActiveUnfocused=true,guiActive = true, guiName = "Speed")]
         public double speed = 0;
@@ -58,6 +59,8 @@ namespace Lib
 
             UpdateToggleMaxSpeedgui();
         }
+
+        #region NO_LOCALIZATION
         void UpdateToggleMaxSpeedgui()
         {
             Fields["meterPerSecondSpeed"].guiActive = maxSpeedLow;
@@ -65,11 +68,14 @@ namespace Lib
 
             Fields["meterPerSecondSpeedHigh"].guiActive = !maxSpeedLow;
             Fields["meterPerSecondSpeedHigh"].guiActiveEditor = !maxSpeedLow;
+            #endregion
 
             if (maxSpeedLow)
-                Events["doToggleMaxSpeed"].guiName = "Toggle max speed (currently: " + LOW_MAXSPEED + ")";
+                Events["doToggleMaxSpeed"].guiName =  // NO_LOCALIZATION
+                    Localizer.Format("#LOC_SmartParts_60") + LOW_MAXSPEED + ")";
             else
-                Events["doToggleMaxSpeed"].guiName = "Toggle max speed (currently: " + HIGH_MAXSPEED + ")";
+                Events["doToggleMaxSpeed"].guiName =  // NO_LOCALIZATION
+                    Localizer.Format("#LOC_SmartParts_60") + HIGH_MAXSPEED + ")";
         }
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = false, guiActiveEditor = false, guiName = "Active")]
@@ -108,7 +114,7 @@ namespace Lib
                 OnEditorAttach();
             }
 
-            Log.setTitle("KM Speedometer");
+            Log.setTitle(Localizer.Format("#LOC_SmartParts_61"));
             Log.Info("Started");
 
             //Initial button layout
@@ -116,7 +122,7 @@ namespace Lib
             //Force activation no matter which stage it's on
             this.part.force_activate();
             updateButtons();
-            initLight(true, "light-go");
+            initLight(true, Localizer.Format("#LOC_SmartParts_33"));
         }
 
         public override void OnUpdate()
@@ -158,14 +164,14 @@ namespace Lib
             if (this.isArmed)
             {
                 //Speed increasing
-                if (direction != "Decreasing" && this.isSpeedIncreasing && this.isPassingThreshold)
+                if (direction != Localizer.Format("#LOC_SmartParts_37") && this.isSpeedIncreasing && this.isPassingThreshold)
                 {
                     fireNextupdate = true;
                     lightsOn();
                     isArmed = false;
                 }
                 //We're descending. Trigger at or below target height
-                else if (direction != "Increasing" && !this.isSpeedIncreasing && this.isPassingThreshold)
+                else if (direction != Localizer.Format("#LOC_SmartParts_36") && !this.isSpeedIncreasing && this.isPassingThreshold)
                 {
                     fireNextupdate = true;
                     lightsOn();
@@ -174,6 +180,7 @@ namespace Lib
             }
         }
 
+        #region NO_LOCALIZATION
         public void Update() //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
         {
             if (agxGroupType == "1" & groupLastUpdate != "1" || agxGroupType != "1" & groupLastUpdate == "1")
@@ -190,6 +197,7 @@ namespace Lib
                 }
             }
         }
+        #endregion
 
         private void refreshPartWindow() //AGX: Refresh right-click part window to show/hide Groups slider
         {
@@ -245,6 +253,7 @@ namespace Lib
             this.lastSpeed = this.speed;
         }
 
+        #region NO_LOCALIZATION
         private void updateButtons()
         {
             //Change to AGX buttons if AGX installed
@@ -282,6 +291,7 @@ namespace Lib
 
             UpdateToggleMaxSpeedgui();
         }
+        #endregion
 
         bool doUpdateEditor = false;
 

@@ -4,6 +4,7 @@
  *
  */
 
+using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,12 @@ namespace Lib
         public float meterHeight = 0;
   
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
-            UI_ChooseOption(options = new string[] { "All", "Ascent", "Descent" })]
-        public string direction = "All";
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_1", "#LOC_SmartParts_2", "#LOC_SmartParts_3" })]
+        public string direction = "#LOC_SmartParts_1";
 
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Use AGL"),
-            UI_Toggle(disabledText = "False", enabledText = "True")]
+            UI_Toggle(disabledText = "#LOC_SmartParts_4", enabledText = "#LOC_SmartParts_5")]
         public bool useAGL = true;
         #endregion
 
@@ -71,7 +72,7 @@ namespace Lib
             this.part.force_activate();
             Log.Info("KM Altimeter Detector Started");
             updateButtons();
-            initLight(true, "light-go");
+            initLight(true, "light-go");  // NO_LOCALIZATION
         }
 
         public override void OnUpdate() {
@@ -100,14 +101,14 @@ namespace Lib
             //If the device is armed, check for the trigger altitude
             if (isArmed) {
                 //We're ascending. Trigger at or above target height
-                if (direction != "Descent" && ascending && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow) {
+                if (direction != Localizer.Format("#LOC_SmartParts_3") && ascending && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow) {
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
                     lightsOn();
                     isArmed = false;
                 }
                 //We're descending. Trigger at or below target height
-                else if (direction != "Ascent" && !ascending && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow) {
+                else if (direction != Localizer.Format("#LOC_SmartParts_2") && !ascending && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow) {
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
                     lightsOn();
@@ -125,6 +126,8 @@ namespace Lib
                 }
             }
         }
+
+        #region NO_LOCALIZATION
         public void Update() //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
         {
             if (agxGroupType == "1" & groupLastUpdate != "1" || agxGroupType != "1" & groupLastUpdate == "1") //AGX: Monitor group to see if we need to refresh window
@@ -139,6 +142,7 @@ namespace Lib
                 }
             }
         }
+        #endregion
 
         private void refreshPartWindow() //AGX: Refresh right-click part window to show/hide Groups slider
         {
@@ -180,6 +184,7 @@ namespace Lib
             currentWindow = Math.Abs((TimeWarp.fixedDeltaTime * this.vessel.verticalSpeed) * 1.05);
         }
 
+        #region NO_LOCALIZATION
         private void updateButtons() {
             //Change to AGX buttons if AGX installed
             if (AGXInterface.AGExtInstalled()) {
@@ -212,8 +217,9 @@ namespace Lib
                 Fields["agxGroupNum"].guiActive = false;
             }
         }
+        #endregion
 
-		private void onGUI() {
+        private void onGUI() {
             //Update buttons
             updateButtons();
         }

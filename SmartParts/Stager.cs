@@ -4,6 +4,7 @@
  *
  */
 
+using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,18 +19,18 @@ namespace Lib
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "Resource"),
             UI_ChooseOption(
-                options = new string[] { "Empty" }
+                options = new string[] { "#LOC_SmartParts_62" }
             )]
-        public string monitoredResource = "Empty";
+        public string monitoredResource = "#LOC_SmartParts_62";
 
         [KSPField(guiActiveUnfocused=true,guiActive = true, guiActiveEditor = false, guiName = "Resource")]
-        public String resourceFlightDisplay = "Empty";
+        public String resourceFlightDisplay = "#LOC_SmartParts_62";
 
         [KSPField(guiActiveUnfocused=true,guiActive = true, guiActiveEditor = false, guiName = "Trigger when")]
-        public string triggerFlightDisplay = "Decreasing";
+        public string triggerFlightDisplay = "#LOC_SmartParts_37";
 
         [KSPField(guiActiveUnfocused=true,guiActive = true, guiActiveEditor = false, guiName = "Monitor")]
-        public string monitorFlightDisplay = "Single Part";
+        public string monitorFlightDisplay = "#LOC_SmartParts_63";
 
         [KSPField]
         public bool forceSinglePart = true;
@@ -110,7 +111,7 @@ namespace Lib
                 this.part.OnEditorAttach += OnEditorAttach;
             }
 
-            Log.setTitle("KM Stager");
+            Log.setTitle(Localizer.Format("#LOC_SmartParts_64"));
             Log.Info("Started");
 
             //Force activation no matter which stage it's on
@@ -121,17 +122,17 @@ namespace Lib
                 findObservedPart();
                 //Update static flight displays with correct values
                 resourceFlightDisplay = monitoredResource;
-                triggerFlightDisplay = decreasing ? "Decreasing" : "Increasing";
+                triggerFlightDisplay = decreasing ? Localizer.Format("#LOC_SmartParts_37") : Localizer.Format("#LOC_SmartParts_36");
                 switch (singlePart)
                 {
                     case monitoredParts.single:
-                        monitorFlightDisplay = "Single Part";
+                        monitorFlightDisplay = Localizer.Format("#LOC_SmartParts_63");
                         break;
                     case monitoredParts.stage:
-                        monitorFlightDisplay = "Current Stage";
+                        monitorFlightDisplay = Localizer.Format("#LOC_SmartParts_65");
                         break;
                     case monitoredParts.vessel:
-                        monitorFlightDisplay = "Entire Ship";
+                        monitorFlightDisplay = Localizer.Format("#LOC_SmartParts_66");
                         break;
                 }
             }
@@ -142,7 +143,7 @@ namespace Lib
                 updateList();
             }
             updateButtons();
-            initLight(true, "light-go");
+            initLight(true, Localizer.Format("#LOC_SmartParts_33"));
         }
 
         public override void OnUpdate()
@@ -237,7 +238,7 @@ namespace Lib
 
         public override void OnFixedUpdate()
         {
-            if (isArmed && monitoredResource != "Empty")
+            if (isArmed && monitoredResource != Localizer.Format("#LOC_SmartParts_62"))
             {
                 Log.Info(string.Format("OnFixedUpdate, Monitor Mode: {0}, Trigger Mode: {1}", monitorFlightDisplay, triggerFlightDisplay));
                 if (singlePart == monitoredParts.single && observedPart != null && observedPart.Resources[monitoredResource] != null)
@@ -302,6 +303,7 @@ namespace Lib
             }
         }
 
+    #region NO_LOCALIZATION
         public void Update()
         {
             //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
@@ -319,11 +321,14 @@ namespace Lib
                 }
             }
         }
+        #endregion
+
         public override string GetInfo()
         {
-            return "Built-in auto staging smart part";
+            return Localizer.Format("#LOC_SmartParts_67");
         }
 
+        #region NO_LOCALIZATION
         private void updateButtons()
         {
             if (forceSinglePart)
@@ -367,22 +372,28 @@ namespace Lib
             //Hide auto reset button, since we don't need, we can reactivate in AG
             Fields["autoReset"].guiActive = false;
             Fields["autoReset"].guiActiveEditor = false;
+            #endregion
 
             if (decreasing)
-                Events["setDecreasing"].guiName = "Trigger when Decreasing";
+                Events["setDecreasing"].guiName =  // NO_LOCALIZATION
+                    Localizer.Format("#LOC_SmartParts_68");
             else
-                Events["setDecreasing"].guiName = "Trigger when Increasing";
+                Events["setDecreasing"].guiName =  // NO_LOCALIZATION
+                    Localizer.Format("#LOC_SmartParts_69");
 
             switch (singlePart)
             {
                 case monitoredParts.single:
-                    Events["setSinglePart"].guiName = "Single Part";
+                    Events["setSinglePart"].guiName =  // NO_LOCALIZATION
+                        Localizer.Format("#LOC_SmartParts_63");
                     break;
                 case monitoredParts.stage:
-                    Events["setSinglePart"].guiName = "Current Stage";
+                    Events["setSinglePart"].guiName =  // NO_LOCALIZATION
+                        Localizer.Format("#LOC_SmartParts_65");
                     break;
                 case monitoredParts.vessel:
-                    Events["setSinglePart"].guiName = "Entire Ship";
+                    Events["setSinglePart"].guiName =  // NO_LOCALIZATION
+                        Localizer.Format("#LOC_SmartParts_66");
                     break;
             }
         }
@@ -441,13 +452,13 @@ namespace Lib
             if (resourceToMonitor != "")
             {
                 monitoredResource = resourceToMonitor;
-                Fields["monitoredResource"].guiActiveEditor = false;
+                Fields["monitoredResource"].guiActiveEditor = false; // NO_LOCALIZATION
                 return;
             }
             //Create temporary string list to collect resources
             List<string> resourceList = new List<string>();
             //Instantiate monitoredResource options so we can access its option array
-            UI_ChooseOption resourceOptions = (UI_ChooseOption)Fields["monitoredResource"].uiControlEditor;
+            UI_ChooseOption resourceOptions = (UI_ChooseOption)Fields["monitoredResource"].uiControlEditor; // NO_LOCALIZATION
             if (observedPart != null)
             {
                 if (observedPart.Resources.Count > 0)
@@ -465,8 +476,8 @@ namespace Lib
                 else
                 {
                     //If there are no resources in the monitored part, set monitoredResource to "Empty"
-                    resourceOptions.options = new string[] { "Empty" };
-                    monitoredResource = "Empty";
+                    resourceOptions.options = new string[] { Localizer.Format("#LOC_SmartParts_62") };
+                    monitoredResource = Localizer.Format("#LOC_SmartParts_62");
                 }
             }
         }

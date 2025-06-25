@@ -262,3 +262,8 @@ Taken over by LinuxGurugamer here
 
 1.10.0
 	Added ability to control the part from EVA'd Kerbal
+
+1.10.1 
+	Updated version file to use github for new version info
+	Localized all displayable strings
+	Added support for KerbalChangeLog

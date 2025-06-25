@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2005
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36212.18 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartParts", "SmartParts\SmartParts.csproj", "{668B7336-C342-4CE6-8BF4-B937C6FF9E37}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{907B982D-662E-4EF9-8E14-AEFA57FECCF6}"
 	ProjectSection(SolutionItems) = preProject
 		buildRelease.bat = buildRelease.bat
+		ChangeLog.cfg = ChangeLog.cfg
 		Changelog.txt = Changelog.txt
 		deploy.bat = deploy.bat
+		GameData\SmartParts\Localization\en-us.cfg = GameData\SmartParts\Localization\en-us.cfg
 		jenkins.txt = jenkins.txt
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md

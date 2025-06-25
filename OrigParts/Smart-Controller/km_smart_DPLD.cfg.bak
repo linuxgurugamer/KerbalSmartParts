@@ -1,0 +1,52 @@
+PART
+{
+	// --- general parameters ---
+	name = km_smart_DPLD
+	module = Part
+	author = Linuxgurugamer
+	
+	MODEL
+	{
+		model = SmartParts/Parts/Smart-Controller/DPLD
+	}
+	// --- asset parameters ---
+	scale = 1.0
+	rescaleFactor = 1
+	
+	// --- editor parameters ---
+	TechRequired = flightControl
+	entryCost = 7200
+	cost = 1250
+	category = Control
+	subcategory = 0
+	title = Comm-Pro Communication Net Action Group Trigger
+	manufacturer = Orbital Intelligence
+	description = Fires an event if the vessel loses or gains Commnet connectivity
+	tags = control comm
+	
+	// attachment rules: stack, srfAttach, allowStack, allowSrfAttach, allowCollision
+	attachRules = 0,1,0,0,0
+	
+	// definition format is Position X, Position Y, Position Z, Up X, Up Y, Up Z
+	node_attach = 0.0, 0.0	, 0.02, 0.0, 0.0, -1.0
+	
+	// --- standard part parameters ---
+	PhysicsSignificance = 1 
+	mass = 0.05
+	dragModelType = default
+	maximum_drag = 0.0001
+	minimum_drag = 0.0001
+	angularDrag = 0.0005
+	crashTolerance = 10
+	maxTemp = 1200
+	bulkheadProfiles = srf
+	
+
+	MODULE
+	{
+		name = DPLD
+		group = 0
+		activeLight = light-go
+	}
+	
+}

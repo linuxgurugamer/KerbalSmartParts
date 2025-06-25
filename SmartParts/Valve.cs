@@ -4,6 +4,7 @@
  *
  */
 
+using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,7 +74,7 @@ namespace Lib
 
 
         #region Overrides
-
+        #region NO_LOCALIZATION
         public override void OnStart(StartState state) {
             valveEffect = (KSPParticleEmitter)this.part.GetComponentInChildren<KSPParticleEmitter>();
 
@@ -112,6 +113,7 @@ namespace Lib
                 }
             }
         }
+        #endregion
 
         void OnDestroy()
         {
@@ -128,7 +130,7 @@ namespace Lib
                 valveEffect.localVelocity.y = maxSpeedY * force / 100;
 				this.part.Rigidbody.AddRelativeForce((facing == 0 ? Vector3.up : Vector3.forward) * appliedForce * 1);
                 foreach (PartResource resource in part.parent.Resources) {
-                    if (resource.resourceName == "ElectricCharge")
+                    if (resource.resourceName == Localizer.Format("#LOC_SmartParts_70"))
                         continue;
                     receivedRessource += this.part.RequestResource(resource.resourceName, force * timeStep * drainRatio[resource.resourceName]);
                 }
@@ -148,7 +150,7 @@ namespace Lib
 
 
         #region Methods
-
+        #region NO_LOCALIZATION
         public void setValve(bool nextIsOpen) {
             if (valveEffect != null) {
                 isOpen = nextIsOpen;
@@ -182,6 +184,7 @@ namespace Lib
             Events["activateStaging"].guiActiveEditor = true;
             Events["deactivateStaging"].guiActiveEditor = false;
         }
+        #endregion
 
         #endregion
     }

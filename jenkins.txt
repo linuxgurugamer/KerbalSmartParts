@@ -31,6 +31,7 @@
 
 # 3:SOURCEFILE, DESTDIR
 3:SmartParts.version,GameData/SmartParts
+3:ChangeLog.cfg,GameData/SmartParts
 #3:LICENSE.md,GameData/KerbalHotSeat
 #3:README.md,GameData/KerbalHotSeat
 

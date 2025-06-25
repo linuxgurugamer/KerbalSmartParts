@@ -1,3 +1,4 @@
+using KSP.Localization;
 using System;
 
 
@@ -45,10 +46,10 @@ namespace Lib
 
             wasArmed = isArmed;
 
-            Fields["autoReset"].guiActiveEditor = false;
-            Fields["autoReset"].guiActive = false;
+            Fields[Localizer.Format("#LOC_SmartParts_52")].guiActiveEditor = false;
+            Fields[Localizer.Format("#LOC_SmartParts_52")].guiActive = false;
             
-            initLight(true, "light-go");
+            initLight(true, Localizer.Format("#LOC_SmartParts_33"));
         }
 
 
@@ -137,14 +138,14 @@ namespace Lib
             
             if (FindEngine())
             {
-                Fields["isArmed"].guiActiveEditor = true;
-                Fields["isArmed"].guiActive = true;
+                Fields[Localizer.Format("#LOC_SmartParts_53")].guiActiveEditor = true;
+                Fields[Localizer.Format("#LOC_SmartParts_53")].guiActive = true;
             }
             else
             {
-                ScreenMessages.PostScreenMessage("SmartSRB only works on SRBs", 5f, ScreenMessageStyle.UPPER_CENTER);
-                Fields["isArmed"].guiActiveEditor = false;
-                Fields["isArmed"].guiActive = false;
+                ScreenMessages.PostScreenMessage(Localizer.Format("#LOC_SmartParts_54"), 5f, ScreenMessageStyle.UPPER_CENTER);
+                Fields[Localizer.Format("#LOC_SmartParts_53")].guiActiveEditor = false;
+                Fields[Localizer.Format("#LOC_SmartParts_53")].guiActive = false;
             }
         }
 
@@ -197,6 +198,7 @@ namespace Lib
                 return;
             }
 
+            #region NO_LOCALIZATION
             //Change to AGX buttons if AGX installed
             if (AGXInterface.AGExtInstalled())
             {
@@ -230,6 +232,8 @@ namespace Lib
                 Fields["agxGroupNum"].guiActive = false;
             }
         }
+        #endregion
+
         protected void refreshPartWindow() //AGX: Refresh right-click part window to show/hide Groups slider
         {
             UIPartActionWindow[] partWins = FindObjectsOfType<UIPartActionWindow>();
@@ -239,6 +243,8 @@ namespace Lib
                 partWin.displayDirty = true;
             }
         }
+
+        #region NO_LOCALIZATION
         protected void Update() //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
         {
             if (!moduleIsEnabled)
@@ -258,6 +264,7 @@ namespace Lib
             }
         }
     }
+    #endregion
 
     class SmartSRB : SmartSRBBase
     {
@@ -288,15 +295,16 @@ namespace Lib
     class EmbeddedSmartSRB : SmartSRBBase
     {
         [KSPField(guiActiveUnfocused=true,isPersistant = false)]
-        public string guiGroup = "EmbededSmartSRB";
+        public const string guiGroup = "EmbededSmartSRB";
+
         [KSPField(guiActiveUnfocused=true,isPersistant = false)]
-        public string guiGroupDisplayName = "Smart SRB";
+        public string guiGroupDisplayName = "#LOC_SmartParts_55";
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true)]
         public bool isResearched = false;
 
         [KSPField(guiActiveUnfocused=true,isPersistant = false)]
-        public string researchPartName = "km_smart_srb";
+        public string researchPartName = "km_smart_srb"; // NO_LOCALIZATION
 
         public override void OnStart(StartState state)
         {
@@ -316,7 +324,7 @@ namespace Lib
 
             if (state == StartState.Editor) // This is an upgrade, so don't give it to an already in flight vessel that doesn't have it
             {
-                researchPartName = researchPartName.Replace("_", ".");
+                researchPartName = researchPartName.Replace("_", "."); // NO_LOCALIZATION
                 var ap = PartLoader.getPartInfoByName(researchPartName);
 
                 if (ap == null)

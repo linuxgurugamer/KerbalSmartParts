@@ -1,0 +1,51 @@
+PART
+{
+	// Kerbal Space Program - Part Config
+	// Fuel Generator
+	//
+	 
+	// --- general parameters ---
+	name = FuelController
+	module = Part
+	author = dtobi
+	 
+	// --- asset parameters ---
+	mesh = km_fuel_controller.mu
+	scale = 1.0
+	rescaleFactor = 1.2
+	 
+	 
+	// --- editor parameters ---
+	TechRequired = fuelSystems
+	entryCost = 6200
+	cost = 500
+	category = Control
+	subcategory = 0
+	title = KM Fuel Controller
+	manufacturer = Orbital Intelligence
+	description = Can be used to control the fuel flow of fuel lines. Attach this to the source tank and attach a fuel line to it. Turn it on and off via the right click menu or action groups. Off by default.
+
+	tags = control fuel
+	 
+	 
+	// attachment rules: stack, srfAttach, allowStack, allowSrfAttach, allowCollision
+	attachRules = 0,1,0,1,0
+	node_attach = 0.0, 0.0, 0.028, 0.0, 0.0, -1.0, 1
+	
+	// --- standard part parameters ---
+	mass = 0.05
+	dragModelType = default
+	maximum_drag = 0.2
+	minimum_drag = 0.2
+	angularDrag = 0.2
+	crashTolerance = 10
+	maxTemp = 2000
+	fuelCrossFeed = False
+	bulkheadProfiles = srf
+	 
+	MODULE
+	{
+		name = FuelController
+		flowEnabled = false
+	}
+}

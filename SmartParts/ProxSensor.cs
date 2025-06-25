@@ -1,4 +1,5 @@
-﻿using System;
+using KSP.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,8 +29,8 @@ namespace Lib
 
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
-            UI_ChooseOption(options = new string[] { "Both", "Approach", "Departure" })]
-        public string direction = "Both";
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_28", "#LOC_SmartParts_29", "#LOC_SmartParts_30" })]
+        public string direction = "#LOC_SmartParts_28";
 
 
 
@@ -87,7 +88,7 @@ namespace Lib
             if (isArmed)
             {
                 //We're departing. Trigger at or beyond target distance
-                if (direction != "Approach" && departing && Math.Abs((currentDistance + currentWindow) - meterDistance) < currentWindow)
+                if (direction != Localizer.Format("#LOC_SmartParts_29") && departing && Math.Abs((currentDistance + currentWindow) - meterDistance) < currentWindow)
                 {
                     Log.Info("Proximity alert. Action fired on " + this.vessel.name + " on channel " + this.channel);
                     //This flag is checked for in OnUpdate to trigger staging
@@ -95,7 +96,7 @@ namespace Lib
                     isArmed = false;
                 }
                 //We're approaching. Trigger at or closer than target distance
-                else if (direction != "Departure" && !departing && Math.Abs((currentDistance - currentWindow) - meterDistance) < currentWindow)
+                else if (direction != Localizer.Format("#LOC_SmartParts_30") && !departing && Math.Abs((currentDistance - currentWindow) - meterDistance) < currentWindow)
                 {
                     Log.Info("Proximity alert. Action fired on " + this.vessel.name + " on channel " + this.channel);
                     //This flag is checked for in OnUpdate to trigger staging
@@ -167,6 +168,7 @@ namespace Lib
 
         #region Methods
 
+        #region NO_LOCALIZATION
         private void updateButtons()
         {
             //Change to AGX buttons if AGX installed
@@ -202,6 +204,7 @@ namespace Lib
                 Fields["agxGroupNum"].guiActive = false;
             }
         }
+        #endregion
 
         private void updateDistance()
         {
@@ -246,6 +249,7 @@ namespace Lib
             }
         }
 
+        #region NO_LOCALIZATION
         public void Update()
         { //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
             if (agxGroupType == "1" & groupLastUpdate != "1" || agxGroupType != "1" & groupLastUpdate == "1") //AGX: Monitor group to see if we need to refresh window
@@ -262,6 +266,7 @@ namespace Lib
                 }
             }
         }
+        #endregion
 
         public void OnDestroy()
         {
@@ -284,7 +289,7 @@ namespace Lib
             {
                 return;
             }
-            Log.Info(this.vessel.vesselName + " proximity alarm has been registered on channel " + this.channel);
+            Log.Info(this.vessel.vesselName + " proximity alarm has been registered on channel " + this.channel); // NO_LOCALIZATION
             //Register sensor to proximity sensor list
             ProxChannel.Listeners.Add(this);
             justRegistered = true;
@@ -294,7 +299,7 @@ namespace Lib
         {
             if (ProxChannel.Listeners.Any(listener => listener.vessel.id == this.vessel.id && listener.channel == this.channel) == true)
             {
-                Log.Info(sensor.vessel.vesselName + " proximity alarm has been deregistered on channel " + sensor.channel);
+                Log.Info(sensor.vessel.vesselName + " proximity alarm has been deregistered on channel " + sensor.channel); // NO_LOCALIZATION
                 ProxChannel.Listeners.Remove(sensor);
                 ProxChannel.Listeners.TrimExcess();
             }

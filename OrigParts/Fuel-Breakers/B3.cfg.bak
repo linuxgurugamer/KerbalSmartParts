@@ -1,0 +1,52 @@
+PART
+{
+	// --- general parameters ---
+	name = kb-fuel-breaker2
+	module = Part
+	author = dtobi
+	
+	// --- asset parameters ---
+	mesh = fuel-breaker.mu
+	rescaleFactor = 1.0
+	scale = 1.0
+	
+	// --- editor parameters ---
+	TechRequired = veryHeavyRocketry
+	entryCost = 24000
+	cost = 800
+	category = Control
+	subcategory = 0
+	title = Fuel Flow Breaker 2.5m
+	manufacturer = Orbital Intelligence
+	description = Can stop or enable the fuel flow between two tanks or between a tank and an engine. Control it by action group or context menu. Use this to control your CoM.
+	tags = control fuel
+	
+	// attachment rules: stack, srfAttach, allowStack, allowSrfAttach, allowCollision
+	attachRules = 1,0,1,1,0
+	
+	// definition format is Position X, Position Y, Position Z, Up X, Up Y, Up Z
+	node_attach = -1.25, 0.0, 0.0, -1.0, 0.0, 0.0, 1
+	node_stack_top = 0.0, 0.08038, 0.0, 0.0, 1.0, 0.0, 2
+	node_stack_bottom = 0.0, -0.08038, 0.0, 0.0, -1.0, 0.0, 2
+	
+	fuelCrossFeed = False
+	
+	// --- standard part parameters ---
+	mass = 0.60
+	dragModelType = default
+	maximum_drag = 0.2
+	minimum_drag = 0.2
+	angularDrag = 2
+	crashTolerance = 10
+	maxTemp = 2000
+	breakingForce = 200
+	breakingTorque = 200
+	bulkheadProfiles = size2
+	
+	MODULE
+	{
+	    name = FuelController
+		flowEnabled = false
+	}
+	
+}

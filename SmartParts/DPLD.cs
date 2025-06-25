@@ -1,4 +1,5 @@
-﻿using System;
+using KSP.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,9 @@ namespace Lib
 
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
-            UI_ChooseOption(options = new string[] { "KSC loss", "Total Loss", "Initialized" })]
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_6", "#LOC_SmartParts_7", "#LOC_SmartParts_8" })]
         //UI_ChooseOption(options = new string[] { "KSC loss", "Total Comm Loss", "Network Initialized" })]
-        public string actionMode = "KSC loss";
+        public string actionMode = "#LOC_SmartParts_6";
 
 
         [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Lights On", guiActiveUnfocused=true)]
@@ -93,7 +94,7 @@ namespace Lib
             }
         }
 
-
+        #region NO_LOCALIZATION
         public void Update()
         {
             //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
@@ -111,11 +112,14 @@ namespace Lib
                 }
             }
         }
+        #endregion
+
         public override string GetInfo()
         {
-            return "Built-in Data-Packet Loss Detector smart part";
+            return Localizer.Format("#LOC_SmartParts_9");
         }
 
+        #region NO_LOCALIZATION
         private void updateButtons()
         {
 
@@ -178,8 +182,8 @@ namespace Lib
             lightsOn();
             isArmed = false;
         }
-
-#endregion
+        #endregion
+        #endregion
 
     }
 }

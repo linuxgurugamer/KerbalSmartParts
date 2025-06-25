@@ -1,9 +1,10 @@
-﻿/*
+/*
  * Author: dtobi, Firov
  * This work is shared under Creative Commons CC BY-NC-SA 3.0 license.
  *
  */
 
+using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,24 +41,24 @@ namespace Lib
         };
 
         public static Dictionary<int, String> KM_dictAGNames = new Dictionary<int, String> {
-            { 0,  "Stage" },
-            { 1,  "Custom01" },
-            { 2,  "Custom02" },
-            { 3,  "Custom03" },
-            { 4,  "Custom04" },
-            { 5,  "Custom05" },
-            { 6,  "Custom06" },
-            { 7,  "Custom07" },
-            { 8,  "Custom08" },
-            { 9,  "Custom09" },
-            { 10, "Custom10" },
-            { 11, "Light" },
-            { 12, "RCS" },
-            { 13, "SAS" },
-            { 14, "Brakes" },
-            { 15, "Abort" },
-            { 16, "Gear" },
-            { 17, "Beep" },
+            { 0,  Localizer.Format("#LOC_SmartParts_10") },
+            { 1,  Localizer.Format("#LOC_SmartParts_11") },
+            { 2,  Localizer.Format("#LOC_SmartParts_12") },
+            { 3,  Localizer.Format("#LOC_SmartParts_13") },
+            { 4,  Localizer.Format("#LOC_SmartParts_14") },
+            { 5,  Localizer.Format("#LOC_SmartParts_15") },
+            { 6,  Localizer.Format("#LOC_SmartParts_16") },
+            { 7,  Localizer.Format("#LOC_SmartParts_17") },
+            { 8,  Localizer.Format("#LOC_SmartParts_18") },
+            { 9,  Localizer.Format("#LOC_SmartParts_19") },
+            { 10, Localizer.Format("#LOC_SmartParts_20") },
+            { 11, Localizer.Format("#LOC_SmartParts_21") },
+            { 12, Localizer.Format("#LOC_SmartParts_22") },
+            { 13, Localizer.Format("#LOC_SmartParts_23") },
+            { 14, Localizer.Format("#LOC_SmartParts_24") },
+            { 15, Localizer.Format("#LOC_SmartParts_25") },
+            { 16, Localizer.Format("#LOC_SmartParts_26") },
+            { 17, Localizer.Format("#LOC_SmartParts_27") },
         };
 
         public static int maxEvent = 17;
@@ -112,7 +113,7 @@ namespace Lib
             // if this is the root part and its a decoupler: ignore it. It was probably fired before.
             // This is dirty guesswork but everything else seems not to work. KSP staging is too messy.
             if (p.vessel.rootPart == p &&
-                (p.name.IndexOf("ecoupl") != -1 || p.name.IndexOf("eparat") != -1)) {
+                (p.name.IndexOf("ecoupl") != -1 || p.name.IndexOf("eparat") != -1)) {  // NO_LOCALIZATION
             }
             else if (p.inverseStage < currentStage) {
                 highestChildStage = p.inverseStage;

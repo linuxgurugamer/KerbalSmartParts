@@ -1,0 +1,59 @@
+PART
+{
+	// Kerbal Space Program - Part Config
+	// Auto Valve
+	//
+	
+	// --- general parameters ---
+	name = km_valve2
+	module = Part
+	author = dtobi
+	
+	MODEL
+	{
+		model = SmartParts/Parts/Valve/valve2
+	}
+	// --- asset parameters ---
+	scale = 1.0
+	rescaleFactor = 1
+	
+	// --- editor parameters ---
+	TechRequired = scienceTech
+	entryCost = 4200
+	cost = 275
+	category = Control
+	subcategory = 0
+	title = V2 Valve Straight
+	manufacturer = Orbital Intelligence
+	description = Use this valve to dump excess fuel before re-entry. Straight fuel dump. The valve dumps the resources contained in the tank it is attached to.
+	tags = control fuel dump valve
+	
+	stagingIcon = RCS_MODULE
+	
+	
+	// attachment rules: stack, srfAttach, allowStack, allowSrfAttach, allowCollision
+	attachRules = 0,1,0,0,0
+	
+	// definition format is Position X, Position Y, Position Z, Up X, Up Y, Up Z
+	node_attach = 0.0, 0.0, 0.02, 0.0, 0.0, -1.0
+	
+	// --- standard part parameters ---
+	PhysicsSignificance = 1 
+	mass = 0.05
+	dragModelType = default
+	maximum_drag = 0.0001
+	minimum_drag = 0.0001
+	angularDrag = 0.0005
+	crashTolerance = 10
+	maxTemp = 2000
+	bulkheadProfiles = srf
+	
+	MODULE
+	{
+		name = Valve
+		force = 10
+		facing = 1
+	
+	}
+	
+}

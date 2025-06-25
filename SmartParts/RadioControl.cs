@@ -4,6 +4,7 @@
  *
  */
 
+using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Lib
     public class RadioControl : SmartSensorModuleBase
     {
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Sync. Head."),
-            UI_Toggle(disabledText = "Disabled", enabledText = "Enabled")]
+            UI_Toggle(disabledText = "#LOC_SmartParts_31", enabledText = "#LOC_SmartParts_32")]
         private bool enableSync = false;
         private int updateCounter = 0;
 
@@ -349,7 +350,7 @@ namespace Lib
                 }
             }
             updateButtons();
-            initLight(true, "light-go");
+            initLight(true, Localizer.Format("#LOC_SmartParts_33"));
         }
 
 
@@ -374,7 +375,7 @@ namespace Lib
 
         }
 
-
+        #region NO_LOCALIZATION
         public void Update() //AGX: The OnUpdate above only seems to run in flight mode, Update() here runs in all scenes
         {
             if (agxGroupType == "1" & groupLastUpdate != "1" || agxGroupType != "1" & groupLastUpdate == "1") //AGX: Monitor group to see if we need to refresh window
@@ -387,7 +388,7 @@ namespace Lib
                     groupLastUpdate = "0";
             }
         }
-
+        #endregion
 
         public void OnDetach(bool first)
         {
@@ -401,6 +402,7 @@ namespace Lib
             Log.Info("OnJustAboutToBeDestroyed");
         }
 
+        #region NO_LOCALIZATION
         private void updateButtons()
         {
             //Change to AGX buttons if AGX installed
@@ -436,6 +438,7 @@ namespace Lib
                 Fields["agxGroupNum"].guiActive = false;
             }
         }
+        #endregion
 
         private void refreshPartWindow() //AGX: Refresh right-click part window to show/hide Groups slider
         {
