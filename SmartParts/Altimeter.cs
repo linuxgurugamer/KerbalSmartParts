@@ -6,11 +6,6 @@
 
 using KSP.Localization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using KSP.IO;
 
 namespace Lib
 {
@@ -20,20 +15,20 @@ namespace Lib
         #region Fields
 
 
-        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiName = "Kilometers", guiFormat = "F0", guiUnits = "km"),
+        [KSPField(guiActiveUnfocused = true, isPersistant = true, guiActive = true, guiName = "Kilometers", guiFormat = "F0", guiUnits = "km"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 1000f, incrementLarge = 100f, incrementSmall = 25f, incrementSlide = 1f)]
         public float kilometerHeight = 0;
 
-        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiName = "Meters", guiFormat = "F0", guiUnits = "m"),
+        [KSPField(guiActiveUnfocused = true, isPersistant = true, guiActive = true, guiName = "Meters", guiFormat = "F0", guiUnits = "m"),
             UI_FloatEdit(scene = UI_Scene.All, minValue = 0f, maxValue = 1000f, incrementLarge = 100f, incrementSmall = 25f, incrementSlide = 1f)]
         public float meterHeight = 0;
-  
-        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
-            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_1", "#LOC_SmartParts_2", "#LOC_SmartParts_3" })]
+
+        [KSPField(guiActiveUnfocused = true, isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_1", "#LOC_SmartParts_Ascent", "#LOC_SmartParts_Descent" })]
         public string direction = "#LOC_SmartParts_1";
 
 
-        [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Use AGL"),
+        [KSPField(guiActiveUnfocused = true, isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Use AGL"),
             UI_Toggle(disabledText = "#LOC_SmartParts_4", enabledText = "#LOC_SmartParts_5")]
         public bool useAGL = true;
         #endregion
@@ -41,12 +36,14 @@ namespace Lib
 
         #region Events
         [KSPAction("Activate Detection")]
-        public void doActivateAG(KSPActionParam param) {
+        public void doActivateAG(KSPActionParam param)
+        {
             isArmed = true;
         }
 
         [KSPAction("Deactivate Detection")]
-        public void doDeActivateAG(KSPActionParam param) {
+        public void doDeActivateAG(KSPActionParam param)
+        {
             isArmed = false;
         }
         #endregion
@@ -63,9 +60,13 @@ namespace Lib
         #endregion
 
 
-#region Overrides
+        #region Overrides
 
-        public override void OnStart(StartState state) {
+        public override void OnStart(StartState state)
+        {
+            Log.setTitle(this.ClassName);
+            //Log.SetLevel(Log.LEVEL.INFO);
+
             //Initial button layout
             updateButtons();
             //Force activation no matter which stage it's on
@@ -75,18 +76,23 @@ namespace Lib
             initLight(true, "light-go");  // NO_LOCALIZATION
         }
 
-        public override void OnUpdate() {
+        public override void OnUpdate()
+        {
             //Check to see if the device has been rearmed, if so, deactivate the lights
-            if (isArmed && illuminated) {
+            if (isArmed && illuminated)
+            {
                 lightsOff();
             }
             //In order for physics to take effect on jettisoned parts, the staging event has to be fired from OnUpdate
-            if (fireNextupdate) {
+            if (fireNextupdate)
+            {
                 int groupToFire = 0; //AGX: need to send correct group
-                if (AGXInterface.AGExtInstalled()) {
+                if (AGXInterface.AGExtInstalled())
+                {
                     groupToFire = int.Parse(agxGroupType);
                 }
-                else {
+                else
+                {
                     groupToFire = int.Parse(group);
                 }
                 Helper.fireEvent(this.part, groupToFire, (int)agxGroupNum);
@@ -94,21 +100,31 @@ namespace Lib
             }
         }
 
-        public override void OnFixedUpdate() {
+        double lastTimeCheck;
+        public override void OnFixedUpdate()
+        {
             //Check current altitude
+            if (Planetarium.GetUniversalTime() < lastTimeCheck + 0.2)
+                return;
+            lastTimeCheck = Planetarium.GetUniversalTime();
             updateAltitude();
 
             //If the device is armed, check for the trigger altitude
-            if (isArmed) {
+            if (isArmed)
+            {
                 //We're ascending. Trigger at or above target height
-                if (direction != Localizer.Format("#LOC_SmartParts_3") && ascending && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow) {
+                //if (Localizer.Format(direction) != Localizer.Format("#LOC_SmartParts_Descent") && ascending && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                if (direction != "#LOC_SmartParts_Descent" && ascending && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                {
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
                     lightsOn();
                     isArmed = false;
                 }
                 //We're descending. Trigger at or below target height
-                else if (direction != Localizer.Format("#LOC_SmartParts_2") && !ascending && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow) {
+                //else if (Localizer.Format(direction) != Localizer.Format("#LOC_SmartParts_Ascent") && !ascending && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                else if (direction != "#LOC_SmartParts_Ascent" && !ascending && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                {
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
                     lightsOn();
@@ -117,11 +133,14 @@ namespace Lib
             }
 
             //If auto reset is enabled, wait for departure from the target window and rearm
-            if (!isArmed & autoReset) {
-                if (ascending && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) > currentWindow) {
+            if (!isArmed & autoReset)
+            {
+                if (ascending && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) > currentWindow)
+                {
                     isArmed = true;
                 }
-                else if (!ascending && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) > currentWindow) {
+                else if (!ascending && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) > currentWindow)
+                {
                     isArmed = true;
                 }
             }
@@ -134,10 +153,12 @@ namespace Lib
             {
                 updateButtons();
                 refreshPartWindow();
-                if (agxGroupType == "1") {
+                if (agxGroupType == "1")
+                {
                     groupLastUpdate = "1";
                 }
-                else {
+                else
+                {
                     groupLastUpdate = "0";
                 }
             }
@@ -148,17 +169,19 @@ namespace Lib
         {
             UIPartActionWindow[] partWins = FindObjectsOfType<UIPartActionWindow>();
             //Log.Info("Wind count " + partWins.Count());
-            foreach (UIPartActionWindow partWin in partWins) {
+            foreach (UIPartActionWindow partWin in partWins)
+            {
                 partWin.displayDirty = true;
             }
         }
 
-#endregion
+        #endregion
 
 
-#region Methods
+        #region Methods
 
-        private void updateAltitude() {
+        private void updateAltitude()
+        {
             //Sea altitude
             double altSea = this.vessel.mainBody.GetAltitude(this.vessel.CoM);
             //Altitude over terrain. Does not factor in ocean surface.
@@ -166,16 +189,19 @@ namespace Lib
             //Set the last altitude for the purpose of direction determination
             double lastAlt = alt;
             //Set current altitude
-            if(!this.vessel.mainBody.ocean) {
+            if (!this.vessel.mainBody.ocean)
+            {
                 //If the cellestial body this craft is orbiting lacks an ocean, always use AGL
                 alt = altSurface;
-            }            
-            else if (useAGL) {
+            }
+            else if (useAGL)
+            {
                 //If the planet has an ocean, and the "useAGL" is selected, calculate whether AGL or ASL is closer, and use that
                 alt = (altSurface < altSea ? altSurface : altSea);
             }
             //Otherwise, use sea level
-            else {                
+            else
+            {
                 alt = altSea;
             }
             //Determine if the vessel is ascending or descending
@@ -185,9 +211,11 @@ namespace Lib
         }
 
         #region NO_LOCALIZATION
-        private void updateButtons() {
+        private void updateButtons()
+        {
             //Change to AGX buttons if AGX installed
-            if (AGXInterface.AGExtInstalled()) {
+            if (AGXInterface.AGExtInstalled())
+            {
                 Fields["group"].guiActiveEditor = false;
                 Fields["group"].guiActive = false;
                 Fields["agxGroupType"].guiActiveEditor = true;
@@ -200,7 +228,8 @@ namespace Lib
                     Fields["agxGroupNum"].guiActive = true;
                     //Fields["agxGroupNum"].guiName = "Group:";
                 }
-                else {
+                else
+                {
                     Fields["agxGroupNum"].guiActiveEditor = false;
                     Fields["agxGroupNum"].guiActive = false;
                     //Fields["agxGroupNum"].guiName = "N/A";
@@ -219,12 +248,13 @@ namespace Lib
         }
         #endregion
 
-        private void onGUI() {
+        private void onGUI()
+        {
             //Update buttons
             updateButtons();
         }
 
-#endregion
+        #endregion
     }
 }
 

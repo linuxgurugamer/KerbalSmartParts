@@ -8,6 +8,8 @@ rem    but not always
 
 set H=%KSPDIR%
 
+rem set H=R:\KSP\KSP_1.12.5-Blueshift
+
 set GAMEDIR=SmartParts
 set GAMEDATA="GameData"
 set VERSIONFILE=%GAMEDIR%.version

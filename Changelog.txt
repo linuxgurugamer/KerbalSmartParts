@@ -267,3 +267,7 @@ Taken over by LinuxGurugamer here
 	Updated version file to use github for new version info
 	Localized all displayable strings
 	Added support for KerbalChangeLog
+
+1.10.2
+	Fixed bug in altimeter which ignored the ascent/descent setting
+	Adjusted the FixedUpdate code to only run 5x/second instead of 50x/second
