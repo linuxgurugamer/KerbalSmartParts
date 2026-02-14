@@ -24,8 +24,8 @@ namespace Lib
         public float meterHeight = 0;
 
         [KSPField(guiActiveUnfocused = true, isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
-            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_1", "#LOC_SmartParts_Ascent", "#LOC_SmartParts_Descent" })]
-        public string direction = "#LOC_SmartParts_1";
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_All", "#LOC_SmartParts_Ascent", "#LOC_SmartParts_Descent" })]
+        public string direction = "#LOC_SmartParts_All";
 
 
         [KSPField(guiActiveUnfocused = true, isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Use AGL"),
@@ -38,6 +38,7 @@ namespace Lib
         [KSPAction("Activate Detection")]
         public void doActivateAG(KSPActionParam param)
         {
+            Log.Info("Activate Detection");
             isArmed = true;
         }
 
@@ -52,6 +53,7 @@ namespace Lib
         #region Variables
 
         private double alt = 0;
+        private double lastAlt = 0;
         private double currentWindow = 0;
         private Boolean ascending = false;
         private Boolean fireNextupdate = false;
@@ -95,13 +97,13 @@ namespace Lib
                 {
                     groupToFire = int.Parse(group);
                 }
-                Helper.fireEvent(this.part, groupToFire, (int)agxGroupNum);
+               Helper.fireEvent(this.part, groupToFire, (int)agxGroupNum);
                 fireNextupdate = false;
             }
         }
 
         double lastTimeCheck;
-        public override void OnFixedUpdate()
+        public  override void OnFixedUpdate()
         {
             //Check current altitude
             if (Planetarium.GetUniversalTime() < lastTimeCheck + 0.2)
@@ -109,12 +111,17 @@ namespace Lib
             lastTimeCheck = Planetarium.GetUniversalTime();
             updateAltitude();
 
+            double triggerHeight = kilometerHeight * 1000 + meterHeight;
+
             //If the device is armed, check for the trigger altitude
             if (isArmed)
             {
                 //We're ascending. Trigger at or above target height
                 //if (Localizer.Format(direction) != Localizer.Format("#LOC_SmartParts_Descent") && ascending && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
-                if (direction != "#LOC_SmartParts_Descent" && ascending && Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                //if (direction != "#LOC_SmartParts_Descent" && ascending && 
+                //    Math.Abs((alt - currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                if (direction != "#LOC_SmartParts_Descent" && ascending &&
+                   alt  > triggerHeight && lastAlt <= triggerHeight)
                 {
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
@@ -123,7 +130,10 @@ namespace Lib
                 }
                 //We're descending. Trigger at or below target height
                 //else if (Localizer.Format(direction) != Localizer.Format("#LOC_SmartParts_Ascent") && !ascending && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
-                else if (direction != "#LOC_SmartParts_Ascent" && !ascending && Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                //else if (direction != "#LOC_SmartParts_Ascent" && !ascending && 
+                //    Math.Abs((alt + currentWindow) - (kilometerHeight * 1000 + meterHeight)) < currentWindow)
+                else if (direction != "#LOC_SmartParts_Ascent" && !ascending &&
+                    alt  < triggerHeight && lastAlt >= triggerHeight)
                 {
                     //This flag is checked for in OnUpdate to trigger staging
                     fireNextupdate = true;
@@ -131,6 +141,7 @@ namespace Lib
                     isArmed = false;
                 }
             }
+            lastAlt = alt;
 
             //If auto reset is enabled, wait for departure from the target window and rearm
             if (!isArmed & autoReset)
@@ -168,7 +179,7 @@ namespace Lib
         private void refreshPartWindow() //AGX: Refresh right-click part window to show/hide Groups slider
         {
             UIPartActionWindow[] partWins = FindObjectsOfType<UIPartActionWindow>();
-            //Log.Info("Wind count " + partWins.Count());
+
             foreach (UIPartActionWindow partWin in partWins)
             {
                 partWin.displayDirty = true;

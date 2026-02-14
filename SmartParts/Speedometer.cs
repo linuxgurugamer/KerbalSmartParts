@@ -26,8 +26,8 @@ namespace Lib
         public float meterPerSecondSpeedHigh = 0;
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Trigger on"),
-            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_1", "#LOC_SmartParts_36", "#LOC_SmartParts_37" })]
-        public string direction = "#LOC_SmartParts_1";
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_All", "#LOC_SmartParts_36", "#LOC_SmartParts_37" })]
+        public string direction = "#LOC_SmartParts_All";
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Speed mode"),
             UI_ChooseOption(options = new string[] { "#LOC_SmartParts_56", "#LOC_SmartParts_57", "#LOC_SmartParts_58", "#LOC_SmartParts_59" })]

@@ -271,3 +271,7 @@ Taken over by LinuxGurugamer here
 1.10.2
 	Fixed bug in altimeter which ignored the ascent/descent setting
 	Adjusted the FixedUpdate code to only run 5x/second instead of 50x/second
+
+1.10.3
+	Fixed another bug in altimeter which ignored the ascent/descent setting
+	Did a bit of optimizing in the calculations

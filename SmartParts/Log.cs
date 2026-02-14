@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 
 namespace Lib
@@ -22,11 +19,13 @@ namespace Lib
 
         public void setTitle(string t)
         {
-            PREFIX = t + ": ";
+            PREFIX = "SmartParts." + t + ": ";
         }
-
+#if DEBUG
+        public static LEVEL level = LEVEL.INFO;
+#else
         public static LEVEL level = LEVEL.WARNING;
-
+#endif
 
 
         public LEVEL GetLevel()
@@ -71,7 +70,7 @@ namespace Lib
             }
         }
 
-[ConditionalAttribute("DEBUG")]
+        [ConditionalAttribute("DEBUG")]
         public void Info(String msg)
         {
 
@@ -82,7 +81,7 @@ namespace Lib
             }
         }
 
-[ConditionalAttribute("DEBUG")]
+        [ConditionalAttribute("DEBUG")]
         public void Test(String msg)
         {
             //if (IsLogable(LEVEL.INFO))

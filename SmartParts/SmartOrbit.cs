@@ -29,8 +29,8 @@ namespace Lib
         public float meterHeight = 0;
 
         [KSPField(guiActiveUnfocused=true,isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Trigger on"),
-            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_1", "#LOC_SmartParts_36", "#LOC_SmartParts_37" })]
-        public string direction = "#LOC_SmartParts_1";
+            UI_ChooseOption(options = new string[] { "#LOC_SmartParts_All", "#LOC_SmartParts_36", "#LOC_SmartParts_37" })]
+        public string direction = "#LOC_SmartParts_All";
 
 
         #endregion
